@@ -6,26 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
-@Table(name = "user")
+@Table(name = "ticket")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+public class TicketEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    private Long totalPrice;
 
-    private String email;
+    private Date expiry;
 
-    private String password;
-
-    private String phone;
-
-    private String avatar;
-
-    private String role;
+    @OneToOne
+    @JoinColumn(name = "transaction_id")
+    private TransactionEntity transactionId;
 }

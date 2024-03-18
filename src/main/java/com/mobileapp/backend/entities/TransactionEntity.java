@@ -7,25 +7,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "user")
+@Table(name = "transaction")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+public class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    private String paymentMethod;
 
-    private String email;
+    private Long totalPrice;
 
-    private String password;
+    private Long quantity;
 
-    private String phone;
-
-    private String avatar;
-
-    private String role;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity userId;
 }

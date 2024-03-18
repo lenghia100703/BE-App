@@ -7,25 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "user")
-@Getter
+@Table(name = "location")
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    private String name;
 
-    private String email;
+    private String description;
 
-    private String password;
+    private double longitude;
 
-    private String phone;
-
-    private String avatar;
-
-    private String role;
+    private double latitude;
 }

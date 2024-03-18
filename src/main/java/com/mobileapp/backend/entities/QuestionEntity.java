@@ -7,25 +7,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "user")
-@Getter
+@Table(name = "question")
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+public class QuestionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    private String question;
 
-    private String email;
+    @OneToOne
+    @JoinColumn(name = "answer_id")
+    private AnswerEntity answerId;
 
-    private String password;
+    private String correctAnswer;
 
-    private String phone;
-
-    private String avatar;
-
-    private String role;
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private UserEntity adminId;
 }
