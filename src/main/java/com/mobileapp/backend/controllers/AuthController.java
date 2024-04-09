@@ -1,6 +1,6 @@
 package com.mobileapp.backend.controllers;
 
-import com.mobileapp.backend.dtos.UserDto;
+import com.mobileapp.backend.dtos.user.UserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

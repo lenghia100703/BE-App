@@ -23,7 +23,7 @@ public class NewsEntity {
 
     private String image;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "admin_id")
     private UserEntity adminId;
 }

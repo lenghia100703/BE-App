@@ -1,5 +1,6 @@
-package com.mobileapp.backend.dtos;
+package com.mobileapp.backend.dtos.user;
 
+import com.mobileapp.backend.dtos.BaseDto;
 import lombok.Getter;
 import lombok.Setter;
 

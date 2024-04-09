@@ -23,7 +23,7 @@ public class PostEntity {
 
     private String image;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity userId;
 }

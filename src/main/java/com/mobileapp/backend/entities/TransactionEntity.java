@@ -23,7 +23,7 @@ public class TransactionEntity {
 
     private Long quantity;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserEntity userId;
 }

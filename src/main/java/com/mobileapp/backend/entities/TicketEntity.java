@@ -23,7 +23,7 @@ public class TicketEntity {
 
     private Date expiry;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "transaction_id")
     private TransactionEntity transactionId;
 }

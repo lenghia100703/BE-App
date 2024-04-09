@@ -19,13 +19,13 @@ public class QuestionEntity {
 
     private String question;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "answer_id")
     private AnswerEntity answerId;
 
     private String correctAnswer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "admin_id")
     private UserEntity adminId;
 }

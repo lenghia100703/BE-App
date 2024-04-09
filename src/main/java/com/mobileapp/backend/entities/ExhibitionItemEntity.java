@@ -21,7 +21,7 @@ public class ExhibitionItemEntity {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "admin_id")
     private UserEntity adminId;
 }

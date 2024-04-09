@@ -23,10 +23,4 @@ public class PaginatedDataDto<T> {
         meta.put(TOTAL_META, String.valueOf(total));
         this.data = data.stream().map(mapper).collect(Collectors.toList());
     }
-
-    public <R> PaginatedDataDto(PaginateData<R> paginateData,
-                                Function<? super R, ? extends T> mapper) {
-        meta.put(TOTAL_META, String.valueOf(paginateData.getTotal()));
-        data = paginateData.getData().stream().map(mapper).collect(Collectors.toList());
-    }
 }
