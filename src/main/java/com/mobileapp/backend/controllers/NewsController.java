@@ -20,6 +20,7 @@ public class NewsController {
 
 
 
+
     public ResponseEntity<?> getImage(Long id) {
         NewsEntity news = newsService.getNewsById(id);
         byte[] imageData = storageService.getImage(news);
