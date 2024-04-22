@@ -11,6 +11,8 @@ import com.mobileapp.backend.enums.ResponseCode;
 import com.mobileapp.backend.repositories.UserRepository;
 import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.utils.SecurityContextUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,9 +24,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
+
 @Service
 public class AuthService {
-    AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     JWTProvider jwtProvider;
@@ -34,6 +38,10 @@ public class AuthService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    public AuthService(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 
     public CommonResponseDto<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
@@ -54,6 +62,8 @@ public class AuthService {
             user.setRefreshToken(refreshToken);
             userRepository.save(user);
             AuthResponseDto authResponse = new AuthResponseDto(user.getId(), accessToken, refreshToken);
+            System.out.println(authResponse.getAccessToken());
+            System.out.println(authResponse.getRefreshToken());
             return new CommonResponseDto<>(authResponse);
         } else {
             return new CommonResponseDto<>(ResponseCode.ERROR);
