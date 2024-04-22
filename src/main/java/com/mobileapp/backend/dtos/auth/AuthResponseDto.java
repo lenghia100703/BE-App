@@ -16,5 +16,8 @@ public class AuthResponseDto {
     private String tokenType = "Bearer ";
 
     public AuthResponseDto(Long id, String accessToken, String refreshToken) {
+        this.id = id;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 }

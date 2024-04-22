@@ -53,17 +53,16 @@ public class AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Optional<UserEntity> optionalUser = userRepository.findUserByEmail(loginDto.getEmail());
-
         if (optionalUser.isPresent()) {
             UserEntity user = optionalUser.get();
+            System.out.println(user.getId());
+            System.out.println(user.getEmail());
             String accessToken = jwtProvider.generateAccessToken(new UserInfoInToken(loginDto.getEmail()));
             String refreshToken = jwtProvider.generateRefreshToken(new UserInfoInToken(loginDto.getEmail()));
             user.setAccessToken(accessToken);
             user.setRefreshToken(refreshToken);
-            userRepository.save(user);
             AuthResponseDto authResponse = new AuthResponseDto(user.getId(), accessToken, refreshToken);
-            System.out.println(authResponse.getAccessToken());
-            System.out.println(authResponse.getRefreshToken());
+            userRepository.save(user);
             return new CommonResponseDto<>(authResponse);
         } else {
             return new CommonResponseDto<>(ResponseCode.ERROR);
