@@ -29,5 +29,7 @@ public class UserEntity {
 
     private String role;
 
+    private String accessToken;
 
+    private String refreshToken;
 }

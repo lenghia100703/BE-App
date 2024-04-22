@@ -1,5 +1,6 @@
 package com.mobileapp.backend.configs;
 
+import com.mobileapp.backend.security.JWTAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

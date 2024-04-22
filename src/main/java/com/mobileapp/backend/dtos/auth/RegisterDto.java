@@ -1,11 +1,10 @@
-package com.mobileapp.backend.dtos.user;
+package com.mobileapp.backend.dtos.auth;
 
 import lombok.Data;
 
 @Data
-public class AddUserDto {
+public class RegisterDto {
     private String username;
-    private String phone;
     private String email;
     private String password;
     private String confirmPassword;

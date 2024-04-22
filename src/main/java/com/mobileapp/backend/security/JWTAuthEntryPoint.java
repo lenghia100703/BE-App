@@ -1,4 +1,4 @@
-package com.mobileapp.backend.configs;
+package com.mobileapp.backend.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,5 +1,6 @@
-package com.mobileapp.backend.configs;
+package com.mobileapp.backend.security;
 
+import com.mobileapp.backend.configs.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

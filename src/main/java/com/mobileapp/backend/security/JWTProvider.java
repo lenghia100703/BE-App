@@ -1,4 +1,4 @@
-package com.mobileapp.backend.configs;
+package com.mobileapp.backend.security;
 
 import com.mobileapp.backend.dtos.user.UserInfoInToken;
 import io.jsonwebtoken.Claims;

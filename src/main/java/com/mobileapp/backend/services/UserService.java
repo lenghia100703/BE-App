@@ -1,15 +1,21 @@
 package com.mobileapp.backend.services;
 
+import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.user.AddUserDto;
 import com.mobileapp.backend.dtos.user.ChangePasswordDto;
 import com.mobileapp.backend.dtos.user.EditUserDto;
+import com.mobileapp.backend.dtos.user.UserDto;
 import com.mobileapp.backend.entities.UserEntity;
 import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.repositories.UserRepository;
+import com.mobileapp.backend.utils.SecurityContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.mobileapp.backend.enums.ResponseCode.ERROR;
@@ -21,8 +27,20 @@ public class UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
-    public UserEntity getCurrentUser(Long id) {
-        return userRepository.getReferenceById(id);
+    public UserEntity getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public UserEntity getCurrentUser() {
+        return userRepository.getById(getCurrentUserId());
+    }
+
+    public PaginatedDataDto<UserDto> getAllUser(Pageable pageable, int page) {
+        Page<UserEntity> userPage = userRepository.findAll(pageable);
+
+        List<UserEntity> users = userPage.getContent();
+
+        return new PaginatedDataDto<>(users.stream().map(UserDto::new).toList(), page, userPage.getTotalPages());
     }
 
     public UserEntity createUser(AddUserDto addUserDto) {
@@ -59,5 +77,9 @@ public class UserService {
     public UserEntity findByEmail(String email) {
         Optional<UserEntity> userOptional = userRepository.findUserByEmail(email);
         return userOptional.orElse(null);
+    }
+
+    public Long getCurrentUserId() {
+        return SecurityContextUtil.getCurrentUserId();
     }
 }

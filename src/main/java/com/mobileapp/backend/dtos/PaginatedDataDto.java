@@ -1,26 +1,17 @@
 package com.mobileapp.backend.dtos;
 
-import java.util.HashMap;
+import com.mobileapp.backend.dtos.user.UserDto;
+import lombok.Data;
+
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+@Data
 public class PaginatedDataDto<T> {
-    public static final String TOTAL_META = "total";
-    private Map<String, String> meta = new HashMap<>(2);
     private List<T> data;
+    private int page;
+    private int totalPage;
 
-    public PaginatedDataDto() {
-    }
-
-    public PaginatedDataDto(long total, List<T> data) {
-        meta.put(TOTAL_META, String.valueOf(total));
-        this.data = data;
-    }
-
-    public <R> PaginatedDataDto(long total, List<R> data, Function<? super R, ? extends T> mapper) {
-        meta.put(TOTAL_META, String.valueOf(total));
-        this.data = data.stream().map(mapper).collect(Collectors.toList());
+    public PaginatedDataDto(List<T> data, int page, int totalPages) {
     }
 }

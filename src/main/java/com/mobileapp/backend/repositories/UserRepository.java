@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    List<UserEntity> findAllUser(Pageable pageable);
     Optional<UserEntity> findUserByEmail(String email);
     Boolean existsByUsername(String username);
 }
