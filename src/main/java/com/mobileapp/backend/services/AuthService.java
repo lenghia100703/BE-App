@@ -10,7 +10,9 @@ import com.mobileapp.backend.entities.UserEntity;
 import com.mobileapp.backend.enums.ResponseCode;
 import com.mobileapp.backend.repositories.UserRepository;
 import com.mobileapp.backend.exceptions.CommonException;
+import com.mobileapp.backend.utils.CurrentUserUtil;
 import com.mobileapp.backend.utils.SecurityContextUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +41,18 @@ public class AuthService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public AuthService(AuthenticationManager authenticationManager) {
+    @Autowired
+    CurrentUserUtil currentUserUtil;
+
+    private final HttpServletResponse response;
+
+    public AuthService(AuthenticationManager authenticationManager, HttpServletResponse response) {
         this.authenticationManager = authenticationManager;
+        this.response = response;
     }
 
     public CommonResponseDto<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
+        System.out.println(loginDto.getEmail());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
@@ -51,14 +60,16 @@ public class AuthService {
                 )
         );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         Optional<UserEntity> optionalUser = userRepository.findUserByEmail(loginDto.getEmail());
+
         if (optionalUser.isPresent()) {
             UserEntity user = optionalUser.get();
-            System.out.println(user.getId());
-            System.out.println(user.getEmail());
-            String accessToken = jwtProvider.generateAccessToken(new UserInfoInToken(loginDto.getEmail()));
-            String refreshToken = jwtProvider.generateRefreshToken(new UserInfoInToken(loginDto.getEmail()));
+//            currentUserUtil.setCurrentUserId(user.getId());
+            String accessToken = jwtProvider.generateAccessToken(response, new UserInfoInToken(user.getId()), user.getRole());
+            String refreshToken = jwtProvider.generateRefreshToken(response, new UserInfoInToken(user.getId()), user.getRole());
             user.setAccessToken(accessToken);
             user.setRefreshToken(refreshToken);
             AuthResponseDto authResponse = new AuthResponseDto(user.getId(), accessToken, refreshToken);
@@ -70,10 +81,11 @@ public class AuthService {
     }
 
     public CommonResponseDto<String> logout() {
+//        Long id = currentUserUtil.getCurrentUserId();
+        Long id = 1L;
+        UserEntity currentUser = userRepository.findById(id).get();
         SecurityContextHolder.clearContext();
-
-        UserEntity currentUser = userRepository.findById(SecurityContextUtil.getCurrentUserId()).get();
-
+        currentUserUtil.setCurrentUserId(0L);
         currentUser.setAccessToken(null);
         currentUser.setRefreshToken(null);
         userRepository.save(currentUser);

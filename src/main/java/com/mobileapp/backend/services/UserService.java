@@ -8,6 +8,7 @@ import com.mobileapp.backend.dtos.user.UserDto;
 import com.mobileapp.backend.entities.UserEntity;
 import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.repositories.UserRepository;
+import com.mobileapp.backend.utils.CurrentUserUtil;
 import com.mobileapp.backend.utils.SecurityContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,12 +28,18 @@ public class UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    CurrentUserUtil currentUserUtil;
+
     public UserEntity getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     public UserEntity getCurrentUser() {
-        return userRepository.getById(getCurrentUserId());
+//        Long id = currentUserUtil.getCurrentUserId();
+        Long id = getCurrentUserId();
+        return getUserById(id);
     }
 
     public PaginatedDataDto<UserDto> getAllUser(Pageable pageable, int page) {

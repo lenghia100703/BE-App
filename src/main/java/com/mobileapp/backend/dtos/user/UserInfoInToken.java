@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UserInfoInToken {
-    private String email;
+    private Long id;
 }

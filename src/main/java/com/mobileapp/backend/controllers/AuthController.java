@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public String logout() {
-        return "Logout Successfully";
+    public CommonResponseDto<String> logout() {
+        return authService.logout();
     }
 }

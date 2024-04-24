@@ -1,5 +1,6 @@
 package com.mobileapp.backend.entities;
 
+import com.fasterxml.jackson.core.type.WritableTypeId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,11 +46,6 @@ public class UserEntity implements UserDetails {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(role));
         return authorities;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
     }
 
     @Override
