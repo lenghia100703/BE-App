@@ -49,6 +49,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         try {
             String token = request.getHeader("Cookie");
             String accessToken = token.split("=")[1].split("; ")[0];
+
             if (accessToken != null) {
                 authentication = getAuthenticationFromJwt(accessToken);
             }

@@ -1,5 +1,6 @@
 package com.mobileapp.backend.services;
 
+import com.mobileapp.backend.constants.PageableConstants;
 import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.user.AddUserDto;
 import com.mobileapp.backend.dtos.user.ChangePasswordDto;
@@ -8,13 +9,11 @@ import com.mobileapp.backend.dtos.user.UserDto;
 import com.mobileapp.backend.entities.UserEntity;
 import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.repositories.UserRepository;
-import com.mobileapp.backend.utils.CurrentUserUtil;
 import com.mobileapp.backend.utils.SecurityContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,11 +31,6 @@ public class UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
-    CurrentUserUtil currentUserUtil;
-
-    private static final int LIMIT = 5;
-
     public UserEntity getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
@@ -47,7 +41,7 @@ public class UserService {
     }
 
     public PaginatedDataDto<UserDto> getAllUser(int page) {
-        Pageable pageable = PageRequest.of(page, LIMIT);
+        Pageable pageable = PageRequest.of(page, PageableConstants.LIMIT);
         Page<UserEntity> userPage = userRepository.findAll(pageable);
 
         List<UserDto> userDtos = userPage.getContent().stream()

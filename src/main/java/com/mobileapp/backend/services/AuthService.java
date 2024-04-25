@@ -1,6 +1,5 @@
 package com.mobileapp.backend.services;
 
-import com.mobileapp.backend.security.JWTProvider;
 import com.mobileapp.backend.dtos.CommonResponseDto;
 import com.mobileapp.backend.dtos.auth.AuthResponseDto;
 import com.mobileapp.backend.dtos.auth.LoginDto;
@@ -8,19 +7,16 @@ import com.mobileapp.backend.dtos.auth.RegisterDto;
 import com.mobileapp.backend.dtos.user.UserInfoInToken;
 import com.mobileapp.backend.entities.UserEntity;
 import com.mobileapp.backend.enums.ResponseCode;
-import com.mobileapp.backend.repositories.UserRepository;
 import com.mobileapp.backend.exceptions.CommonException;
-import com.mobileapp.backend.utils.CurrentUserUtil;
+import com.mobileapp.backend.repositories.UserRepository;
+import com.mobileapp.backend.security.JWTProvider;
 import com.mobileapp.backend.utils.SecurityContextUtil;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,8 +39,6 @@ public class AuthService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
-    CurrentUserUtil currentUserUtil;
 
     private final HttpServletResponse response;
 
@@ -54,15 +48,12 @@ public class AuthService {
     }
 
     public CommonResponseDto<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
                         loginDto.getPassword()
                 )
         );
-
-
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         Optional<UserEntity> optionalUser = userRepository.findUserByEmail(loginDto.getEmail());
 
@@ -81,7 +72,7 @@ public class AuthService {
     }
 
     public CommonResponseDto<String> logout() {
-        Long id = currentUserUtil.getCurrentUserId();
+        Long id = SecurityContextUtil.getCurrentUserId();
         UserEntity currentUser = userRepository.findById(id).get();
         currentUser.setAccessToken(null);
         currentUser.setRefreshToken(null);

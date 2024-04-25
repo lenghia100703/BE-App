@@ -1,5 +1,6 @@
 package com.mobileapp.backend.services;
 
+import com.mobileapp.backend.constants.PageableConstants;
 import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.news.AddNewsDto;
 import com.mobileapp.backend.dtos.news.NewsDto;
@@ -10,12 +11,14 @@ import com.mobileapp.backend.repositories.NewsRepository;
 import com.mobileapp.backend.utils.GithubUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,9 +29,8 @@ public class NewsService {
     @Autowired
     UserService userService;
 
-    GithubUtil githubUtil;
-
-    public PaginatedDataDto<NewsDto> getAllNews(Pageable pageable, int page) {
+    public PaginatedDataDto<NewsDto> getAllNews(int page) {
+        Pageable pageable = PageRequest.of(page, PageableConstants.LIMIT);
         Page<NewsEntity> newsPage = newsRepository.findAll(pageable);
 
         List<NewsEntity> news = newsPage.getContent();
@@ -46,14 +48,16 @@ public class NewsService {
         news.setBody(body);
         news.setImage(GithubUtil.uploadImage(file));
         news.setAdminId(userService.getCurrentUser());
+        news.setCreatedBy(userService.getCurrentUser().getEmail());
+        news.setCreatedAt(new Date(System.currentTimeMillis()));
         return new NewsDto(newsRepository.save(news));
     }
 
-    public String editNews() {
+    public String editNews(Long id) {
         return "Edited successfully";
     }
 
-    public String deleteNews() {
+    public String deleteNews(Long id) {
         return "Deleted successfully";
     }
 }

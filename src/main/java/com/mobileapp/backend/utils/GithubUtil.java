@@ -16,14 +16,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public class GithubUtil {
-    @Value("${github.repo}")
     private static String repo = "Storage_Mobile_App";
 
-    @Value("${github.owner}")
     private static String owner = "lenghia100703";
 
-    @Value("${github.token}")
-    private static String token = "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";
+    private static String token = "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";
 
     public static String uploadImage(MultipartFile file) throws IOException {
         WebClient webClient = WebClient.builder()

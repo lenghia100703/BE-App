@@ -1,5 +1,7 @@
 package com.mobileapp.backend.dtos;
 
+import com.mobileapp.backend.entities.BaseEntity;
+import com.mobileapp.backend.entities.NewsEntity;
 import lombok.*;
 
 import java.util.Date;
@@ -14,4 +16,11 @@ public class BaseDto {
     private Date updatedAt;
     private String createdBy;
     private String updatedBy;
+
+    public BaseDto(BaseEntity news) {
+        this.createdBy = news.getCreatedBy();
+        this.createdAt = news.getCreatedAt();
+        this.updatedAt = news.getUpdatedAt();
+        this.updatedBy = news.getUpdatedBy();
+    }
 }
