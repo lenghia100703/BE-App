@@ -12,6 +12,9 @@ public class PaginatedDataDto<T> {
     private int page;
     private int totalPage;
 
-    public PaginatedDataDto(List<T> data, int page, int totalPages) {
+    public PaginatedDataDto(List<T> data, int page, int totalPage) {
+        this.data = data;
+        this.page = page;
+        this.totalPage = totalPage;
     }
 }

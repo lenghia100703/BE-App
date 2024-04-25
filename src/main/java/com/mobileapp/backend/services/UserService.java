@@ -12,12 +12,15 @@ import com.mobileapp.backend.utils.CurrentUserUtil;
 import com.mobileapp.backend.utils.SecurityContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.mobileapp.backend.enums.ResponseCode.ERROR;
 
@@ -32,22 +35,26 @@ public class UserService {
     @Autowired
     CurrentUserUtil currentUserUtil;
 
+    private static final int LIMIT = 5;
+
     public UserEntity getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     public UserEntity getCurrentUser() {
-//        Long id = currentUserUtil.getCurrentUserId();
         Long id = getCurrentUserId();
         return getUserById(id);
     }
 
-    public PaginatedDataDto<UserDto> getAllUser(Pageable pageable, int page) {
+    public PaginatedDataDto<UserDto> getAllUser(int page) {
+        Pageable pageable = PageRequest.of(page, LIMIT);
         Page<UserEntity> userPage = userRepository.findAll(pageable);
 
-        List<UserEntity> users = userPage.getContent();
+        List<UserDto> userDtos = userPage.getContent().stream()
+                .map(UserDto::new)
+                .collect(Collectors.toList());
 
-        return new PaginatedDataDto<>(users.stream().map(UserDto::new).toList(), page, userPage.getTotalPages());
+        return new PaginatedDataDto<>(userDtos, page, userPage.getTotalPages());
     }
 
     public UserEntity createUser(AddUserDto addUserDto) {

@@ -47,8 +47,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         Authentication authentication = null;
         try {
-            if (request.getHeader("jwt") != null) {
-                authentication = getAuthenticationFromJwt(request.getHeader("jwt"));
+            String token = request.getHeader("Cookie");
+            String accessToken = token.split("=")[1].split("; ")[0];
+            if (accessToken != null) {
+                authentication = getAuthenticationFromJwt(accessToken);
             }
         } catch (Exception ignored) {
         }
@@ -68,7 +70,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private Authentication getAuthenticationInHeader(HttpServletRequest request, HttpServletResponse res) {
-        String jwtHeader = request.getHeader("jwt");
+        String jwtHeader = request.getHeader("Authorization");
         if (jwtHeader != null) {
             try {
                 return getAuthenticationFromJwt(jwtHeader);

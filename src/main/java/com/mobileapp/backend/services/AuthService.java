@@ -16,6 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -52,7 +54,6 @@ public class AuthService {
     }
 
     public CommonResponseDto<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
-        System.out.println(loginDto.getEmail());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
@@ -67,7 +68,6 @@ public class AuthService {
 
         if (optionalUser.isPresent()) {
             UserEntity user = optionalUser.get();
-//            currentUserUtil.setCurrentUserId(user.getId());
             String accessToken = jwtProvider.generateAccessToken(response, new UserInfoInToken(user.getId()), user.getRole());
             String refreshToken = jwtProvider.generateRefreshToken(response, new UserInfoInToken(user.getId()), user.getRole());
             user.setAccessToken(accessToken);
@@ -81,14 +81,23 @@ public class AuthService {
     }
 
     public CommonResponseDto<String> logout() {
-//        Long id = currentUserUtil.getCurrentUserId();
-        Long id = 1L;
+        Long id = currentUserUtil.getCurrentUserId();
         UserEntity currentUser = userRepository.findById(id).get();
-        SecurityContextHolder.clearContext();
-        currentUserUtil.setCurrentUserId(0L);
         currentUser.setAccessToken(null);
         currentUser.setRefreshToken(null);
         userRepository.save(currentUser);
+        SecurityContextHolder.clearContext();
+
+        ResponseCookie jwtCookie = ResponseCookie.from("jwt", null)
+                .maxAge(1000)
+                .httpOnly(true).path("/").secure(true).sameSite("None").build();
+        response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
+
+        ResponseCookie jwtRefreshCookie = ResponseCookie.from("jwt-refresh", null)
+                .maxAge(1000)
+                .httpOnly(true).path("/").secure(true).sameSite("None").build();
+        response.addHeader(HttpHeaders.SET_COOKIE, jwtRefreshCookie.toString());
+
         return new CommonResponseDto<>("Logged out successfully");
     }
 

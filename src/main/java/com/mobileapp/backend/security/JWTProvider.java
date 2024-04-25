@@ -41,6 +41,7 @@ public class JWTProvider {
                 .maxAge(7 * 24 * 60 * 60)
                 .httpOnly(true).path("/").secure(true).sameSite("None").build();
         res.addHeader(HttpHeaders.SET_COOKIE, tokenCookie.toString());
+        res.addHeader("Authorization", "Bearer " + accessToken);
         res.addHeader("jwt", accessToken);
 
         return accessToken;
@@ -49,7 +50,7 @@ public class JWTProvider {
     public String generateRefreshToken(HttpServletResponse res, UserInfoInToken userInfoInToken, String role) {
         Long id = userInfoInToken.getId();
         String refreshToken = doGenerateToken(id, role, refreshTokenExpiration);
-        ResponseCookie tokenCookie = ResponseCookie.from("jwt", refreshToken)
+        ResponseCookie tokenCookie = ResponseCookie.from("jwt-refresh", refreshToken)
                 .maxAge(7 * 24 * 60 * 60)
                 .httpOnly(true).path("/").secure(true).sameSite("None").build();
         res.addHeader(HttpHeaders.SET_COOKIE, tokenCookie.toString());

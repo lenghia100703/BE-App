@@ -31,6 +31,8 @@ public class NewsService {
     }
 
     public String createNews() {
+
+
         return "Created successfully";
     }
 
