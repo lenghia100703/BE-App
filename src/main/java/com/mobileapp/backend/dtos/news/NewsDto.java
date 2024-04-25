@@ -16,11 +16,13 @@ public class NewsDto extends BaseDto {
     private String title;
     private String body;
     private String image;
+    private UserEntity adminId;
 
     public NewsDto(NewsEntity news) {
         this.id = news.getId();
         this.title = news.getTitle();
         this.body = news.getBody();
         this.image = news.getImage();
+        this.adminId = news.getAdminId();
     }
 }
