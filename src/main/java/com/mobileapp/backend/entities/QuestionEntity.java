@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "question")
@@ -19,13 +21,15 @@ public class QuestionEntity extends BaseEntity {
 
     private String question;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "answer_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private AnswerEntity answerId;
 
     private String correctAnswer;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "admin_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity adminId;
 }

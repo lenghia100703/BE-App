@@ -7,6 +7,7 @@ import com.mobileapp.backend.dtos.user.ChangePasswordDto;
 import com.mobileapp.backend.dtos.user.EditUserDto;
 import com.mobileapp.backend.dtos.user.UserDto;
 import com.mobileapp.backend.entities.UserEntity;
+import com.mobileapp.backend.enums.ResponseCode;
 import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.repositories.UserRepository;
 import com.mobileapp.backend.utils.SecurityContextUtil;
@@ -70,6 +71,17 @@ public class UserService {
         userEntity.setUsername(editUserDto.getUsername());
         userEntity.setPhone(editUserDto.getPhone());
         return userRepository.save(userEntity);
+    }
+
+    public String deleteUser(Long id) {
+        UserEntity user = userRepository.getById(id);
+
+        if (user == null) {
+            throw new CommonException(ResponseCode.NOT_FOUND);
+        }
+
+        userRepository.delete(user);
+        return "Deleted successfully";
     }
 
     public void changePassword(UserEntity userEntity, ChangePasswordDto changePasswordDto) {

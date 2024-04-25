@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NewsService {
@@ -58,6 +59,11 @@ public class NewsService {
     }
 
     public String deleteNews(Long id) {
+        NewsEntity news = newsRepository.getById(id);
+        if (news == null) {
+            throw new CommonException(ResponseCode.NOT_FOUND);
+        }
+        newsRepository.delete(news);
         return "Deleted successfully";
     }
 }

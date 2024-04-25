@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "post")
@@ -23,7 +25,8 @@ public class PostEntity extends BaseEntity {
 
     private String image;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity userId;
 }

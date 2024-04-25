@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 
@@ -23,7 +25,8 @@ public class TicketEntity extends BaseEntity {
 
     private Date expiry;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "transaction_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private TransactionEntity transactionId;
 }

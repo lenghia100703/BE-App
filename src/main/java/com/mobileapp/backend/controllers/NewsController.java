@@ -51,14 +51,19 @@ public class NewsController {
         return newsRepository.findAll().stream().map(NewsDto::new).collect(Collectors.toList());
     }
 
+    @GetMapping("/{id}")
+    public CommonResponseDto<NewsDto> getNewsById(@PathVariable("id") Long id) {
+        return new CommonResponseDto<>(new NewsDto(newsService.getNewsById(id)));
+    }
+
     @PutMapping("/{id}")
     public String editNews(@PathVariable Long id) {
         return newsService.editNews(id);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteNews(@PathVariable Long id) {
-        return newsService.deleteNews(id);
+    public CommonResponseDto<String> deleteNews(@PathVariable Long id) {
+        return new CommonResponseDto<>(newsService.deleteNews(id));
     }
 
 }
