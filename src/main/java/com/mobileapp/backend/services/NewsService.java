@@ -30,6 +30,9 @@ public class NewsService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    GithubUtil githubUtil;
+
     public PaginatedDataDto<NewsDto> getAllNews(int page) {
         Pageable pageable = PageRequest.of(page, PageableConstants.LIMIT);
         Page<NewsEntity> newsPage = newsRepository.findAll(pageable);
@@ -47,7 +50,7 @@ public class NewsService {
         NewsEntity news = new NewsEntity();
         news.setTitle(title);
         news.setBody(body);
-        news.setImage(GithubUtil.uploadImage(file));
+        news.setImage(githubUtil.uploadImage(file));
         news.setAdminId(userService.getCurrentUser());
         news.setCreatedBy(userService.getCurrentUser().getEmail());
         news.setCreatedAt(new Date(System.currentTimeMillis()));
