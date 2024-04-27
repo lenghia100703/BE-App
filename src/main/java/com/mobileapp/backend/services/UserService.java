@@ -10,6 +10,7 @@ import com.mobileapp.backend.entities.UserEntity;
 import com.mobileapp.backend.enums.ResponseCode;
 import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.repositories.UserRepository;
+import com.mobileapp.backend.utils.GithubUtil;
 import com.mobileapp.backend.utils.SecurityContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,8 +18,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -31,6 +36,9 @@ public class UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    GithubUtil githubUtil;
 
     public UserEntity getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
@@ -60,17 +68,35 @@ public class UserService {
         UserEntity user = new UserEntity();
         user.setEmail(addUserDto.getEmail());
         user.setPassword(passwordEncoder.encode(addUserDto.getPassword()));
-        user.setPhone(addUserDto.getPhone());
         user.setUsername(addUserDto.getUsername());
+        user.setCreatedAt(new Date(System.currentTimeMillis()));
+        user.setCreatedBy(getCurrentUser().getEmail());
         user.setRole("USER");
 
         return userRepository.save(user);
     }
 
-    public UserEntity editUser(UserEntity userEntity, EditUserDto editUserDto) {
-        userEntity.setUsername(editUserDto.getUsername());
-        userEntity.setPhone(editUserDto.getPhone());
-        return userRepository.save(userEntity);
+    public String editUser(Long id, String email, String username, String phone, MultipartFile file) throws IOException {
+        UserEntity user = userRepository.getById(id);
+        if (user == null) {
+            throw new CommonException(ResponseCode.NOT_FOUND, "Không tìm thấy người dùng!");
+        }
+
+        user.setEmail(email);
+        user.setUsername(username);
+        user.setUpdatedBy(getCurrentUser().getEmail());
+        user.setUpdatedAt(new Date(System.currentTimeMillis()));
+
+        if (!Objects.equals(phone, "")) {
+            user.setPhone(phone);
+        }
+
+        if (file != null) {
+            user.setAvatar(githubUtil.uploadImage(file));
+        }
+
+        userRepository.save(user);
+        return "Edited successfully";
     }
 
     public String deleteUser(Long id) {

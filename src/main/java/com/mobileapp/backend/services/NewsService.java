@@ -57,7 +57,25 @@ public class NewsService {
         return new NewsDto(newsRepository.save(news));
     }
 
-    public String editNews(Long id) {
+    public String editNews(Long id, String title, String body, MultipartFile file) throws IOException {
+        NewsEntity news = newsRepository.getById(id);
+        if (news == null) {
+            throw new CommonException(ResponseCode.NOT_FOUND);
+        }
+
+        news.setTitle(title);
+        news.setBody(body);
+        news.setUpdatedBy(userService.getCurrentUser().getEmail());
+        news.setUpdatedAt(new Date(System.currentTimeMillis()));
+
+        if (file == null) {
+            newsRepository.save(news);
+        } else {
+            news.setImage(githubUtil.uploadImage(file));
+            newsRepository.save(news);
+        }
+
+
         return "Edited successfully";
     }
 

@@ -57,8 +57,12 @@ public class NewsController {
     }
 
     @PutMapping("/{id}")
-    public String editNews(@PathVariable Long id) {
-        return newsService.editNews(id);
+    public CommonResponseDto<String> editNews(@PathVariable Long id,
+                           @RequestParam(value = "image", required = false) MultipartFile file,
+                           @RequestParam("title") String title,
+                           @RequestParam("body") String body) throws IOException {
+
+        return new CommonResponseDto<>(newsService.editNews(id, title, body, file));
     }
 
     @DeleteMapping("/{id}")
