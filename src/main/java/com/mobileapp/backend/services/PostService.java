@@ -31,12 +31,18 @@ public class PostService {
     GithubUtil githubUtil;
 
     public PaginatedDataDto<PostDto> getAllPosts(int page) {
-        Pageable pageable = PageRequest.of(page, PageableConstants.LIMIT);
-        Page<PostEntity> postPage = postRepository.findAll(pageable);
+        List<PostEntity> allPosts = postRepository.findAll();
+        if (page >= 1) {
+            Pageable pageable = PageRequest.of(page - 1, PageableConstants.LIMIT);
+            Page<PostEntity> postPage = postRepository.findAll(pageable);
 
-        List<PostEntity> post = postPage.getContent();
+            List<PostEntity> post = postPage.getContent();
 
-        return new PaginatedDataDto<>(post.stream().map(PostDto::new).toList(), page, postPage.getTotalPages());
+            return new PaginatedDataDto<>(post.stream().map(PostDto::new).toList(), page, allPosts.toArray().length);
+        } else {
+            return new PaginatedDataDto<>(allPosts.stream().map(PostDto::new).toList(), 1, allPosts.toArray().length);
+        }
+
     }
 
     public PostEntity getPostById(Long id) {

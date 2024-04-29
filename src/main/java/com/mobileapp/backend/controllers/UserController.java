@@ -1,6 +1,7 @@
 package com.mobileapp.backend.controllers;
 
 import com.mobileapp.backend.dtos.CommonResponseDto;
+import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.user.AddUserDto;
 import com.mobileapp.backend.dtos.user.ChangePasswordDto;
 import com.mobileapp.backend.dtos.user.EditUserDto;
@@ -40,19 +41,19 @@ public class UserController {
         return new CommonResponseDto<>(new UserDto(user));
     }
 
-//    @GetMapping("")
-//    public PaginatedDataDto<UserDto> getAllUser(@RequestParam(name = "page") int page) {
-//        return userService.getAllUser(page);
-//    }
-
     @GetMapping("")
-    public List<UserDto> getAll() {
-        return userRepository.findAll()
-                .stream()
-                .filter(user -> user.getRole().equals("USER"))
-                .map(UserDto::new)
-                .collect(Collectors.toList());
+    public PaginatedDataDto<UserDto> getAllUser(@RequestParam(name = "page") int page) {
+        return userService.getAllUser(page);
     }
+
+//    @GetMapping("")
+//    public List<UserDto> getAll() {
+//        return userRepository.findAll()
+//                .stream()
+//                .filter(user -> user.getRole().equals("USER"))
+//                .map(UserDto::new)
+//                .collect(Collectors.toList());
+//    }
 
     @PostMapping("")
     public CommonResponseDto<UserDto> createUser(@RequestBody AddUserDto addUserDto) {

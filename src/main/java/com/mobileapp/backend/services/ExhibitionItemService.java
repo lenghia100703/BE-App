@@ -33,12 +33,18 @@ public class ExhibitionItemService {
     GithubUtil githubUtil;
 
     public PaginatedDataDto<ExhibitionItemDto> getAllExhibitions(int page) {
-        Pageable pageable = PageRequest.of(page, PageableConstants.LIMIT);
-        Page<ExhibitionItemEntity> exhibitionPage = exhibitionItemRepository.findAll(pageable);
+        List<ExhibitionItemEntity> allExhibitions = exhibitionItemRepository.findAll();
+        if (page >= 1) {
+            Pageable pageable = PageRequest.of(page - 1, PageableConstants.LIMIT);
+            Page<ExhibitionItemEntity> exhibitionPage = exhibitionItemRepository.findAll(pageable);
 
-        List<ExhibitionItemEntity> exhibition = exhibitionPage.getContent();
+            List<ExhibitionItemEntity> exhibition = exhibitionPage.getContent();
 
-        return new PaginatedDataDto<>(exhibition.stream().map(ExhibitionItemDto::new).toList(), page, exhibitionPage.getTotalPages());
+            return new PaginatedDataDto<>(exhibition.stream().map(ExhibitionItemDto::new).toList(), page, allExhibitions.toArray().length);
+        } else {
+            return new PaginatedDataDto<>(allExhibitions.stream().map(ExhibitionItemDto::new).toList(), 1, allExhibitions.toArray().length);
+        }
+
     }
 
     public ExhibitionItemEntity getExhibitionItemById(Long id) {

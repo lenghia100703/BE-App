@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.mobileapp.backend.enums.ResponseCode.ERROR;
 
@@ -53,14 +54,25 @@ public class UserService {
     }
 
     public PaginatedDataDto<UserDto> getAllUser(int page) {
-        Pageable pageable = PageRequest.of(page, PageableConstants.LIMIT);
-        Page<UserEntity> userPage = userRepository.findAll(pageable);
+        Stream<UserEntity> allUsers = userRepository.findAll().stream().filter(user -> user.getRole().equals("USER"));
+        if (page >= 1) {
+            Pageable pageable = PageRequest.of(page - 1, PageableConstants.LIMIT);
+            Page<UserEntity> userPage = userRepository.findAll(pageable);
 
-        List<UserDto> userDtos = userPage.getContent().stream()
-                .map(UserDto::new)
-                .collect(Collectors.toList());
+            List<UserDto> userDtos = userPage.getContent().stream()
+                    .filter(user -> user.getRole().equals("USER"))
+                    .map(UserDto::new)
+                    .collect(Collectors.toList());
 
-        return new PaginatedDataDto<>(userDtos, page, userPage.getTotalPages());
+            return new PaginatedDataDto<>(userDtos, page, allUsers.toArray().length);
+        } else {
+            List<UserDto> userDtos = userRepository.findAll().stream()
+                    .filter(user -> user.getRole().equals("USER"))
+                    .map(UserDto::new)
+                    .collect(Collectors.toList());
+            return new PaginatedDataDto<>(userDtos, 1, allUsers.toArray().length);
+        }
+
     }
 
     public UserEntity createUser(AddUserDto addUserDto) {

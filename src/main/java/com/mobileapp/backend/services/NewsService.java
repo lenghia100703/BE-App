@@ -34,12 +34,17 @@ public class NewsService {
     GithubUtil githubUtil;
 
     public PaginatedDataDto<NewsDto> getAllNews(int page) {
-        Pageable pageable = PageRequest.of(page, PageableConstants.LIMIT);
-        Page<NewsEntity> newsPage = newsRepository.findAll(pageable);
+        List<NewsEntity> allNews = newsRepository.findAll();
+        if (page >= 1) {
+            Pageable pageable = PageRequest.of(page - 1, PageableConstants.LIMIT);
+            Page<NewsEntity> newsPage = newsRepository.findAll(pageable);
 
-        List<NewsEntity> news = newsPage.getContent();
+            List<NewsEntity> news = newsPage.getContent();
+            return new PaginatedDataDto<>(news.stream().map(NewsDto::new).toList(), page, allNews.toArray().length);
 
-        return new PaginatedDataDto<>(news.stream().map(NewsDto::new).toList(), page, newsPage.getTotalPages());
+        } else {
+            return new PaginatedDataDto<>(allNews.stream().map(NewsDto::new).toList(), 1, allNews.toArray().length);
+        }
     }
 
     public NewsEntity getNewsById(Long id) {

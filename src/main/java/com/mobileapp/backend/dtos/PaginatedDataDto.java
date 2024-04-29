@@ -10,11 +10,11 @@ import java.util.stream.Stream;
 public class PaginatedDataDto<T> {
     private List<T> data;
     private int page;
-    private int totalPage;
+    private int totalData;
 
-    public PaginatedDataDto(List<T> data, int page, int totalPage) {
+    public PaginatedDataDto(List<T> data, int page, int totalData) {
         this.data = data;
         this.page = page;
-        this.totalPage = totalPage;
+        this.totalData = totalData;
     }
 }

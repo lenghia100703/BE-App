@@ -1,19 +1,27 @@
 package com.mobileapp.backend.services;
 
+import com.mobileapp.backend.constants.PageableConstants;
+import com.mobileapp.backend.dtos.PaginatedDataDto;
+import com.mobileapp.backend.dtos.post.PostDto;
 import com.mobileapp.backend.dtos.question.AddQuestionDto;
 import com.mobileapp.backend.dtos.question.EditQuestionDto;
 import com.mobileapp.backend.dtos.question.QuestionDto;
 import com.mobileapp.backend.entities.AnswerEntity;
 import com.mobileapp.backend.entities.NewsEntity;
+import com.mobileapp.backend.entities.PostEntity;
 import com.mobileapp.backend.entities.QuestionEntity;
 import com.mobileapp.backend.enums.ResponseCode;
 import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.repositories.AnswerRepository;
 import com.mobileapp.backend.repositories.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class QuestionService {
@@ -25,6 +33,21 @@ public class QuestionService {
 
     @Autowired
     UserService userService;
+
+    public PaginatedDataDto<QuestionDto> getAllQuestion(int page) {
+        List<QuestionEntity> allQuestions = questionRepository.findAll();
+        if (page >= 1) {
+            Pageable pageable = PageRequest.of(page - 1, PageableConstants.LIMIT);
+            Page<QuestionEntity> questionPage = questionRepository.findAll(pageable);
+
+            List<QuestionEntity> question = questionPage.getContent();
+
+            return new PaginatedDataDto<>(question.stream().map(QuestionDto::new).toList(), page, allQuestions.toArray().length);
+        } else {
+            return new PaginatedDataDto<>(allQuestions.stream().map(QuestionDto::new).toList(), 1, allQuestions.toArray().length);
+        }
+
+    }
 
     public QuestionEntity getQuestionById(Long id) {
         return questionRepository.findById(id).orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND, "Question not found!"));

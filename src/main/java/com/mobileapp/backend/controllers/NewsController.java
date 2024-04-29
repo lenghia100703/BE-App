@@ -41,15 +41,11 @@ public class NewsController {
     }
 
 
-//    @GetMapping("")
-//    public PaginatedDataDto<NewsDto> getAllNews(@RequestParam(name = "page") int page) {
-//        return newsService.getAllNews(page);
-//    }
-
     @GetMapping("")
-    public List<NewsDto> getAll() {
-        return newsRepository.findAll().stream().map(NewsDto::new).collect(Collectors.toList());
+    public PaginatedDataDto<NewsDto> getAllNews(@RequestParam(name = "page") int page) {
+        return newsService.getAllNews(page);
     }
+
 
     @GetMapping("/{id}")
     public CommonResponseDto<NewsDto> getNewsById(@PathVariable("id") Long id) {

@@ -1,6 +1,7 @@
 package com.mobileapp.backend.controllers;
 
 import com.mobileapp.backend.dtos.CommonResponseDto;
+import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.exhibition.ExhibitionItemDto;
 import com.mobileapp.backend.dtos.news.NewsDto;
 import com.mobileapp.backend.repositories.ExhibitionItemRepository;
@@ -23,8 +24,8 @@ public class ExhibitionItemController {
     ExhibitionItemRepository exhibitionItemRepository;
 
     @GetMapping("")
-    public List<ExhibitionItemDto> getAll() {
-        return exhibitionItemRepository.findAll().stream().map(ExhibitionItemDto::new).collect(Collectors.toList());
+    public PaginatedDataDto<ExhibitionItemDto> getAllExhibition(@RequestParam(name = "page") int page) {
+        return exhibitionItemService.getAllExhibitions(page);
     }
 
     @GetMapping("/{id}")

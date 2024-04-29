@@ -1,6 +1,7 @@
 package com.mobileapp.backend.controllers;
 
 import com.mobileapp.backend.dtos.CommonResponseDto;
+import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.question.AddQuestionDto;
 import com.mobileapp.backend.dtos.question.EditQuestionDto;
 import com.mobileapp.backend.dtos.question.QuestionDto;
@@ -22,8 +23,8 @@ public class QuestionController {
     QuestionRepository questionRepository;
 
     @GetMapping("")
-    public List<QuestionDto> getAll() {
-        return questionRepository.findAll().stream().map(QuestionDto::new).collect(Collectors.toList());
+    public PaginatedDataDto<QuestionDto> getAllQuestion(@RequestParam(name = "page") int page) {
+        return questionService.getAllQuestion(page);
     }
 
     @GetMapping("/{id}")
