@@ -24,7 +24,7 @@ public class ExhibitionItemController {
     ExhibitionItemRepository exhibitionItemRepository;
 
     @GetMapping("")
-    public PaginatedDataDto<ExhibitionItemDto> getAllExhibition(@RequestParam(name = "page") int page) {
+    public PaginatedDataDto<ExhibitionItemDto> getAllExhibitions(@RequestParam(name = "page") int page) {
         return exhibitionItemService.getAllExhibitions(page);
     }
 

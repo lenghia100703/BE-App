@@ -42,8 +42,8 @@ public class UserController {
     }
 
     @GetMapping("")
-    public PaginatedDataDto<UserDto> getAllUser(@RequestParam(name = "page") int page) {
-        return userService.getAllUser(page);
+    public PaginatedDataDto<UserDto> getAllUsers(@RequestParam(name = "page") int page) {
+        return userService.getAllUsers(page);
     }
 
 //    @GetMapping("")

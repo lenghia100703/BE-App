@@ -34,7 +34,7 @@ public class QuestionService {
     @Autowired
     UserService userService;
 
-    public PaginatedDataDto<QuestionDto> getAllQuestion(int page) {
+    public PaginatedDataDto<QuestionDto> getAllQuestions(int page) {
         List<QuestionEntity> allQuestions = questionRepository.findAll();
         if (page >= 1) {
             Pageable pageable = PageRequest.of(page - 1, PageableConstants.LIMIT);

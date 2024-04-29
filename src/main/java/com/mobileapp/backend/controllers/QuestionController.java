@@ -23,8 +23,8 @@ public class QuestionController {
     QuestionRepository questionRepository;
 
     @GetMapping("")
-    public PaginatedDataDto<QuestionDto> getAllQuestion(@RequestParam(name = "page") int page) {
-        return questionService.getAllQuestion(page);
+    public PaginatedDataDto<QuestionDto> getAllQuestions(@RequestParam(name = "page") int page) {
+        return questionService.getAllQuestions(page);
     }
 
     @GetMapping("/{id}")
