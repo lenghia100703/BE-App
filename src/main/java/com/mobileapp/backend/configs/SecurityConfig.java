@@ -60,6 +60,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
                         .requestMatchers("/api/news/**").permitAll()
+                        .requestMatchers("/api/exhibition/**").permitAll()
+                        .requestMatchers("/api/question/**").permitAll()
+                        .requestMatchers("/api/post/**").permitAll()
+                        .requestMatchers("/api/location/**").permitAll()
+                        .requestMatchers("/api/transaction/**").permitAll()
+                        .requestMatchers("/api/ticket/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider());
         httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

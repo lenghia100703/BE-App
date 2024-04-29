@@ -4,7 +4,6 @@ import com.mobileapp.backend.constants.PageableConstants;
 import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.user.AddUserDto;
 import com.mobileapp.backend.dtos.user.ChangePasswordDto;
-import com.mobileapp.backend.dtos.user.EditUserDto;
 import com.mobileapp.backend.dtos.user.UserDto;
 import com.mobileapp.backend.entities.UserEntity;
 import com.mobileapp.backend.enums.ResponseCode;
@@ -13,6 +12,7 @@ import com.mobileapp.backend.repositories.UserRepository;
 import com.mobileapp.backend.utils.GithubUtil;
 import com.mobileapp.backend.utils.SecurityContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +39,9 @@ public class UserService {
 
     @Autowired
     GithubUtil githubUtil;
+
+    @Value("${default.avatar}")
+    String defaultAvatar;
 
     public UserEntity getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
@@ -71,6 +74,7 @@ public class UserService {
         user.setUsername(addUserDto.getUsername());
         user.setCreatedAt(new Date(System.currentTimeMillis()));
         user.setCreatedBy(getCurrentUser().getEmail());
+        user.setAvatar(defaultAvatar);
         user.setRole("USER");
 
         return userRepository.save(user);
@@ -92,7 +96,7 @@ public class UserService {
         }
 
         if (file != null) {
-            user.setAvatar(githubUtil.uploadImage(file));
+            user.setAvatar(githubUtil.uploadImage(file, "avatar"));
         }
 
         userRepository.save(user);

@@ -50,7 +50,7 @@ public class NewsService {
         NewsEntity news = new NewsEntity();
         news.setTitle(title);
         news.setBody(body);
-        news.setImage(githubUtil.uploadImage(file));
+        news.setImage(githubUtil.uploadImage(file, "news"));
         news.setAdminId(userService.getCurrentUser());
         news.setCreatedBy(userService.getCurrentUser().getEmail());
         news.setCreatedAt(new Date(System.currentTimeMillis()));
@@ -71,7 +71,7 @@ public class NewsService {
         if (file == null) {
             newsRepository.save(news);
         } else {
-            news.setImage(githubUtil.uploadImage(file));
+            news.setImage(githubUtil.uploadImage(file, "news"));
             newsRepository.save(news);
         }
 

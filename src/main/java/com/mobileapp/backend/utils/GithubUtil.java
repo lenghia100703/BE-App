@@ -28,16 +28,19 @@ public class GithubUtil {
     @Value("${github.token}")
     private String token;
 
-    public String uploadImage(MultipartFile file) throws IOException {
+    @Value("${github.baseUrl}")
+    private String baseUrl;
+
+    public String uploadImage(MultipartFile file, String namePath) throws IOException {
         WebClient webClient = WebClient.builder()
-                .baseUrl("https://api.github.com")
+                .baseUrl(baseUrl)
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .defaultHeader(HttpHeaders.ACCEPT, "application/vnd.github+json")
                 .build();
         System.out.println(token);
         byte[] imageData = file.getBytes();
         String base64ImageData = Base64.getEncoder().encodeToString(imageData);
-        String path = "news/" + file.getOriginalFilename();
+        String path = namePath  + "/" + file.getOriginalFilename();
         String imageUrl = "https://raw.githubusercontent.com/" + owner + "/" + repo + "/main/" + path;
 
         Mono<String> res = webClient.method(HttpMethod.PUT)

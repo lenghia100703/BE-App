@@ -2,8 +2,10 @@ package com.mobileapp.backend.exceptions;
 
 import com.mobileapp.backend.enums.ResponseCode;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 public class CommonException extends RuntimeException {

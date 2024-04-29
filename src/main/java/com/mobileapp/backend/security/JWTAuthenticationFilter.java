@@ -4,6 +4,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.mobileapp.backend.configs.CustomAuthentication;
 import com.mobileapp.backend.configs.CustomUserDetailsService;
+import com.mobileapp.backend.constants.JWTConstant;
 import com.mobileapp.backend.dtos.user.UserInfoInToken;
 import com.mobileapp.backend.entities.UserEntity;
 import com.mobileapp.backend.enums.ResponseCode;
@@ -13,7 +14,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,7 +50,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         Authentication authentication = null;
         try {
-            String token = request.getHeader("Cookie");
+            String token = request.getHeader(HttpHeaders.COOKIE);
             String accessToken = token.split("=")[1].split("; ")[0];
 
             if (accessToken != null) {
@@ -63,7 +66,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getJWTFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7, bearerToken.length());
         }
@@ -71,12 +74,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private Authentication getAuthenticationInHeader(HttpServletRequest request, HttpServletResponse res) {
-        String jwtHeader = request.getHeader("Authorization");
+        String jwtHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (jwtHeader != null) {
             try {
                 return getAuthenticationFromJwt(jwtHeader);
             } catch (TokenExpiredException e) {
-                String jwtRefreshHeader = request.getHeader("jwt-refresh");
+                String jwtRefreshHeader = request.getHeader(JWTConstant.HEADER_REFRESH_TOKEN);
                 if (jwtRefreshHeader != null) {
                     return getUserIdFromJwtRefresh(jwtRefreshHeader, res);
                 }

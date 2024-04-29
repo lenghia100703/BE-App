@@ -2,13 +2,12 @@ package com.mobileapp.backend.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.mobileapp.backend.constants.JWTConstant;
 import com.mobileapp.backend.dtos.user.UserInfoInToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -17,44 +16,39 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
-
-import static com.auth0.jwt.algorithms.Algorithm.HMAC256;
-import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 @Component
 public class JWTProvider {
     private SecretKey Key;
 
-    private String secreteString = "843567893696976453275974432697R634976R738467TR678T34865R6834R8763T478378637664538745673865783678548735687R3";
-
-    private final int accessTokenExpiration = 86400000;
-
-    private final int refreshTokenExpiration = 604800000;
+    @Value("${application.security.jwt.secret-key}")
+    private String secreteString;
 
     public String generateAccessToken(HttpServletResponse res, UserInfoInToken userInfoInToken, String role) {
         Long id = userInfoInToken.getId();
+        int accessTokenExpiration = JWTConstant.ACCESS_TOKEN_EXPIRED;
         String accessToken = doGenerateToken(id, role, accessTokenExpiration);
-        ResponseCookie tokenCookie = ResponseCookie.from("jwt", accessToken)
+        ResponseCookie tokenCookie = ResponseCookie.from(JWTConstant.COOKIE_ACCESS_TOKEN, accessToken)
                 .maxAge(7 * 24 * 60 * 60)
                 .httpOnly(true).path("/").secure(true).sameSite("None").build();
         res.addHeader(HttpHeaders.SET_COOKIE, tokenCookie.toString());
-        res.addHeader("Authorization", "Bearer " + accessToken);
-        res.addHeader("jwt", accessToken);
+        res.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+        res.addHeader(JWTConstant.HEADER_ACCESS_TOKEN, accessToken);
 
         return accessToken;
     }
 
     public String generateRefreshToken(HttpServletResponse res, UserInfoInToken userInfoInToken, String role) {
         Long id = userInfoInToken.getId();
+        int refreshTokenExpiration = JWTConstant.REFRESH_TOKEN_EXPIRED;
         String refreshToken = doGenerateToken(id, role, refreshTokenExpiration);
-        ResponseCookie tokenCookie = ResponseCookie.from("jwt-refresh", refreshToken)
+        ResponseCookie tokenCookie = ResponseCookie.from(JWTConstant.COOKIE_REFRESH_TOKEN, refreshToken)
                 .maxAge(7 * 24 * 60 * 60)
                 .httpOnly(true).path("/").secure(true).sameSite("None").build();
         res.addHeader(HttpHeaders.SET_COOKIE, tokenCookie.toString());
-        res.addHeader("jwt-refresh", refreshToken);
+        res.addHeader(JWTConstant.HEADER_REFRESH_TOKEN, refreshToken);
 
         return refreshToken;
     }
