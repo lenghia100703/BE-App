@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/exhibition")
 public class ExhibitionItemController {
     @Autowired
     ExhibitionItemService exhibitionItemService;

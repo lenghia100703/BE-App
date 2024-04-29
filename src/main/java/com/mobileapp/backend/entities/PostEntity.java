@@ -21,12 +21,10 @@ public class PostEntity extends BaseEntity {
 
     private String title;
 
-    private String body;
-
     private String image;
 
     @ManyToOne
-    @JoinColumn(name = "admin_id")
+    @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity userId;
 }
