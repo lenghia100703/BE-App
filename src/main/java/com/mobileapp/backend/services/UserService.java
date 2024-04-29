@@ -92,7 +92,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public String editUser(Long id, String email, String username, String phone, MultipartFile file) throws IOException {
+    public String editUser(Long id, String email, String username, String phone, String avatarUrl, MultipartFile file) throws IOException {
         UserEntity user = userRepository.getById(id);
         if (user == null) {
             throw new CommonException(ResponseCode.NOT_FOUND, "Không tìm thấy người dùng!");
@@ -105,10 +105,14 @@ public class UserService {
 
         if (!Objects.equals(phone, "")) {
             user.setPhone(phone);
+        } else {
+            user.setPhone("");
         }
 
         if (file != null) {
             user.setAvatar(githubUtil.uploadImage(file, "avatar"));
+        } else {
+            user.setAvatar(avatarUrl);
         }
 
         userRepository.save(user);

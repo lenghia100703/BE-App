@@ -46,14 +46,6 @@ public class UserController {
         return userService.getAllUsers(page);
     }
 
-//    @GetMapping("")
-//    public List<UserDto> getAll() {
-//        return userRepository.findAll()
-//                .stream()
-//                .filter(user -> user.getRole().equals("USER"))
-//                .map(UserDto::new)
-//                .collect(Collectors.toList());
-//    }
 
     @PostMapping("")
     public CommonResponseDto<UserDto> createUser(@RequestBody AddUserDto addUserDto) {
@@ -70,8 +62,9 @@ public class UserController {
                             @RequestParam(value = "avatar", required = false) MultipartFile file,
                             @RequestParam("username") String username,
                             @RequestParam("email") String email,
+                            @RequestParam("avatarUrl") String avatarUrl,
                             @RequestParam("phone") String phone) throws IOException {
-        return new CommonResponseDto<>(userService.editUser(id, email, username, phone, file));
+        return new CommonResponseDto<>(userService.editUser(id, email, username, phone, avatarUrl, file));
     }
 
     @DeleteMapping("/{id}")

@@ -51,12 +51,14 @@ public class NewsService {
         return newsRepository.findById(id).orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND, "News not found!"));
     }
 
-    public NewsDto createNews(String title, String body, MultipartFile file) throws IOException {
+    public NewsDto createNews(String title, String body, String imageUrl, MultipartFile file) throws IOException {
         NewsEntity news = new NewsEntity();
         news.setTitle(title);
         news.setBody(body);
         if (file != null) {
             news.setImage(githubUtil.uploadImage(file, "news"));
+        } else {
+            news.setImage(imageUrl);
         }
         news.setAdminId(userService.getCurrentUser());
         news.setCreatedBy(userService.getCurrentUser().getEmail());
@@ -64,7 +66,7 @@ public class NewsService {
         return new NewsDto(newsRepository.save(news));
     }
 
-    public String editNews(Long id, String title, String body, MultipartFile file) throws IOException {
+    public String editNews(Long id, String title, String body, String imageUrl, MultipartFile file) throws IOException {
         NewsEntity news = newsRepository.getById(id);
         if (news == null) {
             throw new CommonException(ResponseCode.NOT_FOUND);
@@ -77,6 +79,8 @@ public class NewsService {
 
         if (file != null) {
             news.setImage(githubUtil.uploadImage(file, "news"));
+        } else {
+            news.setImage(imageUrl);
         }
 
         newsRepository.save(news);

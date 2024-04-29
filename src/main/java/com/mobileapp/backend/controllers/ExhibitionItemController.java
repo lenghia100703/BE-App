@@ -39,7 +39,7 @@ public class ExhibitionItemController {
     }
 
     @RequestMapping(value = "", consumes = { "multipart/form-data" })
-    public CommonResponseDto<ExhibitionItemDto> createNews(@RequestParam(value = "image", required = false) MultipartFile file,
+    public CommonResponseDto<ExhibitionItemDto> createExhibitionItem(@RequestParam(value = "image", required = false) MultipartFile file,
                                                  @RequestParam("name") String name,
                                                  @RequestParam("imageUrl") String imageUrl,
                                                  @RequestParam("description") String description) throws IOException {

@@ -35,9 +35,10 @@ public class NewsController {
     @RequestMapping(value = "", consumes = { "multipart/form-data" })
     public CommonResponseDto<NewsDto> createNews(@RequestParam(value = "image", required = false) MultipartFile file,
                                                  @RequestParam("title") String title,
+                                                 @RequestParam("imageUrl") String imageUrl,
                                                  @RequestParam("body") String body) throws IOException {
 
-        return new CommonResponseDto<>(newsService.createNews(title, body, file));
+        return new CommonResponseDto<>(newsService.createNews(title, body, imageUrl, file));
     }
 
 
@@ -56,9 +57,10 @@ public class NewsController {
     public CommonResponseDto<String> editNews(@PathVariable Long id,
                            @RequestParam(value = "image", required = false) MultipartFile file,
                            @RequestParam("title") String title,
+                           @RequestParam("imageUrl") String imageUrl,
                            @RequestParam("body") String body) throws IOException {
 
-        return new CommonResponseDto<>(newsService.editNews(id, title, body, file));
+        return new CommonResponseDto<>(newsService.editNews(id, title, body, imageUrl, file));
     }
 
     @DeleteMapping("/{id}")
