@@ -1,7 +1,6 @@
 package com.mobileapp.backend.dtos;
 
 import com.mobileapp.backend.entities.BaseEntity;
-import com.mobileapp.backend.entities.NewsEntity;
 import lombok.*;
 
 import java.util.Date;

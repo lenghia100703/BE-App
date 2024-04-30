@@ -2,7 +2,6 @@ package com.mobileapp.backend.dtos.exhibition;
 
 import com.mobileapp.backend.dtos.user.UserDto;
 import com.mobileapp.backend.entities.ExhibitionItemEntity;
-import com.mobileapp.backend.entities.NewsEntity;
 import lombok.Data;
 
 import java.util.Date;

@@ -4,7 +4,6 @@ import com.mobileapp.backend.dtos.CommonResponseDto;
 import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.user.AddUserDto;
 import com.mobileapp.backend.dtos.user.ChangePasswordDto;
-import com.mobileapp.backend.dtos.user.EditUserDto;
 import com.mobileapp.backend.dtos.user.UserDto;
 import com.mobileapp.backend.entities.UserEntity;
 import com.mobileapp.backend.enums.ResponseCode;
@@ -16,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -59,11 +56,11 @@ public class UserController {
 
     @PutMapping("/{id}")
     public CommonResponseDto<String> editUser(@PathVariable("id") Long id,
-                            @RequestParam(value = "avatar", required = false) MultipartFile file,
-                            @RequestParam("username") String username,
-                            @RequestParam("email") String email,
-                            @RequestParam("avatarUrl") String avatarUrl,
-                            @RequestParam("phone") String phone) throws IOException {
+                                              @RequestParam(value = "avatar", required = false) MultipartFile file,
+                                              @RequestParam("username") String username,
+                                              @RequestParam("email") String email,
+                                              @RequestParam("avatarUrl") String avatarUrl,
+                                              @RequestParam("phone") String phone) throws IOException {
         return new CommonResponseDto<>(userService.editUser(id, email, username, phone, avatarUrl, file));
     }
 
@@ -74,13 +71,8 @@ public class UserController {
 
     @PutMapping("/change-password/{id}")
     public CommonResponseDto<String> changePassword(@PathVariable("id") Long id, @RequestBody ChangePasswordDto changePasswordDto) {
-        UserEntity userById = userService.getUserById(id);
 
-        if (userById == null) {
-            throw new CommonException(ResponseCode.NOT_FOUND, "Không tìm thấy người dùng!");
-        }
-
-        userService.changePassword(userById, changePasswordDto);
+        userService.changePassword(id, changePasswordDto);
         return new CommonResponseDto<>(ResponseCode.SUCCESS);
     }
 }

@@ -1,21 +1,16 @@
 package com.mobileapp.backend.utils;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-
-import java.util.Base64;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.util.Base64;
 
 @Component
 public class GithubUtil {
@@ -40,7 +35,7 @@ public class GithubUtil {
         System.out.println(token);
         byte[] imageData = file.getBytes();
         String base64ImageData = Base64.getEncoder().encodeToString(imageData);
-        String path = namePath  + "/" + file.getOriginalFilename();
+        String path = namePath + "/" + file.getOriginalFilename();
         String imageUrl = "https://raw.githubusercontent.com/" + owner + "/" + repo + "/main/" + path;
 
         Mono<String> res = webClient.method(HttpMethod.PUT)
@@ -54,7 +49,7 @@ public class GithubUtil {
         return imageUrl;
     }
 
-    private  String buildRequestBody(String base64ImageData) {
+    private String buildRequestBody(String base64ImageData) {
         return "{\"message\": \"Upload image\", \"content\": \"" + base64ImageData + "\"}";
     }
 }

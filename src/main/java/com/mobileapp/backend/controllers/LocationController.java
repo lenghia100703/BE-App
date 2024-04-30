@@ -5,9 +5,6 @@ import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.location.AddLocationDto;
 import com.mobileapp.backend.dtos.location.EditLocationDto;
 import com.mobileapp.backend.dtos.location.LocationDto;
-import com.mobileapp.backend.dtos.question.AddQuestionDto;
-import com.mobileapp.backend.dtos.question.EditQuestionDto;
-import com.mobileapp.backend.dtos.question.QuestionDto;
 import com.mobileapp.backend.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +32,7 @@ public class LocationController {
     }
 
     @PostMapping(value = "")
-    public CommonResponseDto<LocationDto> createLocation(@RequestBody AddLocationDto addLocationDto)  {
+    public CommonResponseDto<LocationDto> createLocation(@RequestBody AddLocationDto addLocationDto) {
         return new CommonResponseDto<>(locationService.createLocation(addLocationDto));
     }
 

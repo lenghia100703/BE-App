@@ -2,11 +2,11 @@ package com.mobileapp.backend.services;
 
 import com.mobileapp.backend.configs.AcceptedFileType;
 import com.mobileapp.backend.entities.NewsEntity;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.nio.file.Files;

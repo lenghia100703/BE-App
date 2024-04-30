@@ -2,13 +2,10 @@ package com.mobileapp.backend.services;
 
 import com.mobileapp.backend.constants.PageableConstants;
 import com.mobileapp.backend.dtos.PaginatedDataDto;
-import com.mobileapp.backend.dtos.post.PostDto;
 import com.mobileapp.backend.dtos.question.AddQuestionDto;
 import com.mobileapp.backend.dtos.question.EditQuestionDto;
 import com.mobileapp.backend.dtos.question.QuestionDto;
 import com.mobileapp.backend.entities.AnswerEntity;
-import com.mobileapp.backend.entities.NewsEntity;
-import com.mobileapp.backend.entities.PostEntity;
 import com.mobileapp.backend.entities.QuestionEntity;
 import com.mobileapp.backend.enums.ResponseCode;
 import com.mobileapp.backend.exceptions.CommonException;

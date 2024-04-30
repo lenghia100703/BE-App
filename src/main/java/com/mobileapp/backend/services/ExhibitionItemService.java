@@ -2,10 +2,8 @@ package com.mobileapp.backend.services;
 
 import com.mobileapp.backend.constants.PageableConstants;
 import com.mobileapp.backend.dtos.PaginatedDataDto;
-import com.mobileapp.backend.dtos.news.NewsDto;
 import com.mobileapp.backend.dtos.exhibition.ExhibitionItemDto;
 import com.mobileapp.backend.entities.ExhibitionItemEntity;
-import com.mobileapp.backend.entities.NewsEntity;
 import com.mobileapp.backend.enums.ResponseCode;
 import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.repositories.ExhibitionItemRepository;

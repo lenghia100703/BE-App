@@ -1,10 +1,6 @@
 package com.mobileapp.backend.dtos.question;
 
-import com.mobileapp.backend.dtos.answer.AnswerDto;
-import com.mobileapp.backend.dtos.user.UserDto;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 public class AddQuestionDto {

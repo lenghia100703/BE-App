@@ -2,7 +2,6 @@ package com.mobileapp.backend.services;
 
 import com.mobileapp.backend.constants.PageableConstants;
 import com.mobileapp.backend.dtos.PaginatedDataDto;
-import com.mobileapp.backend.dtos.news.AddNewsDto;
 import com.mobileapp.backend.dtos.news.NewsDto;
 import com.mobileapp.backend.entities.NewsEntity;
 import com.mobileapp.backend.enums.ResponseCode;
@@ -15,12 +14,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NewsService {

@@ -130,8 +130,13 @@ public class UserService {
         return "Deleted successfully";
     }
 
-    public void changePassword(UserEntity userEntity, ChangePasswordDto changePasswordDto) {
-        if (!changePasswordDto.getPassword().equals("")) {
+    public void changePassword(Long id, ChangePasswordDto changePasswordDto) {
+        UserEntity userEntity = userRepository.getById(id);
+        if (userEntity == null) {
+            throw new CommonException(ResponseCode.NOT_FOUND);
+        }
+
+        if (!changePasswordDto.getPassword().equals("") && passwordEncoder.matches(changePasswordDto.getCurrentPassword(), userEntity.getPassword())) {
             if (changePasswordDto.getPassword().length() < 8) {
                 throw new CommonException(ERROR, "Mật khẩu phải có ít nhất 8 ký tự");
             }

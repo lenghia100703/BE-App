@@ -1,13 +1,10 @@
 package com.mobileapp.backend.dtos.news;
 
-import com.mobileapp.backend.dtos.BaseDto;
 import com.mobileapp.backend.dtos.user.UserDto;
 import com.mobileapp.backend.entities.NewsEntity;
-import com.mobileapp.backend.entities.UserEntity;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 

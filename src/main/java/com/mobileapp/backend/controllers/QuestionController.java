@@ -38,7 +38,7 @@ public class QuestionController {
     }
 
     @PostMapping(value = "")
-    public CommonResponseDto<QuestionDto> createQuestion(@RequestBody AddQuestionDto addQuestionDto)  {
+    public CommonResponseDto<QuestionDto> createQuestion(@RequestBody AddQuestionDto addQuestionDto) {
         return new CommonResponseDto<>(questionService.createQuestion(addQuestionDto));
     }
 

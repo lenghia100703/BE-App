@@ -1,12 +1,13 @@
 package com.mobileapp.backend.dtos.user;
 
-import com.mobileapp.backend.dtos.BaseDto;
 import com.mobileapp.backend.entities.UserEntity;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
 
+@Data
 @Getter
 @Setter
 public class UserDto {

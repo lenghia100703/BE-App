@@ -1,6 +1,5 @@
 package com.mobileapp.backend.entities;
 
-import com.fasterxml.jackson.core.type.WritableTypeId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

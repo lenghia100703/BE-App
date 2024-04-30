@@ -57,16 +57,16 @@ public class SecurityConfig {
         httpSecurity.exceptionHandling((configurer) -> configurer.authenticationEntryPoint(new JWTAuthEntryPoint()));
         httpSecurity.authorizeHttpRequests(request ->
                         request
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/user/**").permitAll()
-                        .requestMatchers("/api/news/**").permitAll()
-                        .requestMatchers("/api/exhibition/**").permitAll()
-                        .requestMatchers("/api/question/**").permitAll()
-                        .requestMatchers("/api/post/**").permitAll()
-                        .requestMatchers("/api/location/**").permitAll()
-                        .requestMatchers("/api/transaction/**").permitAll()
-                        .requestMatchers("/api/ticket/**").permitAll()
-                        .anyRequest().authenticated())
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/user/**").permitAll()
+                                .requestMatchers("/api/news/**").permitAll()
+                                .requestMatchers("/api/exhibition/**").permitAll()
+                                .requestMatchers("/api/question/**").permitAll()
+                                .requestMatchers("/api/post/**").permitAll()
+                                .requestMatchers("/api/location/**").permitAll()
+                                .requestMatchers("/api/transaction/**").permitAll()
+                                .requestMatchers("/api/ticket/**").permitAll()
+                                .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider());
         httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();

@@ -2,7 +2,6 @@ package com.mobileapp.backend.dtos.question;
 
 import com.mobileapp.backend.dtos.answer.AnswerDto;
 import com.mobileapp.backend.dtos.user.UserDto;
-import com.mobileapp.backend.entities.NewsEntity;
 import com.mobileapp.backend.entities.QuestionEntity;
 import lombok.Data;
 

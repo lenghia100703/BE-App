@@ -27,9 +27,7 @@ import java.util.Optional;
 
 @Service
 public class AuthService {
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
+    private final HttpServletResponse response;
     @Autowired
     JWTProvider jwtProvider;
 
@@ -38,9 +36,8 @@ public class AuthService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
-
-
-    private final HttpServletResponse response;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public AuthService(AuthenticationManager authenticationManager, HttpServletResponse response) {
         this.authenticationManager = authenticationManager;

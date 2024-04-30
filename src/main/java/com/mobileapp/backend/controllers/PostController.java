@@ -2,7 +2,6 @@ package com.mobileapp.backend.controllers;
 
 import com.mobileapp.backend.dtos.CommonResponseDto;
 import com.mobileapp.backend.dtos.PaginatedDataDto;
-import com.mobileapp.backend.dtos.news.NewsDto;
 import com.mobileapp.backend.dtos.post.PostDto;
 import com.mobileapp.backend.repositories.PostRepository;
 import com.mobileapp.backend.services.PostService;
@@ -26,7 +25,7 @@ public class PostController {
         return postService.getAllPosts(page);
     }
 
-    @RequestMapping(value = "", consumes = { "multipart/form-data" })
+    @RequestMapping(value = "", consumes = {"multipart/form-data"})
     public CommonResponseDto<PostDto> createPost(@RequestParam(value = "image", required = false) MultipartFile file,
                                                  @RequestParam("title") String title) throws IOException {
 

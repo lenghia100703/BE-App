@@ -5,9 +5,7 @@ import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.location.AddLocationDto;
 import com.mobileapp.backend.dtos.location.EditLocationDto;
 import com.mobileapp.backend.dtos.location.LocationDto;
-import com.mobileapp.backend.dtos.post.PostDto;
 import com.mobileapp.backend.entities.LocationEntity;
-import com.mobileapp.backend.entities.PostEntity;
 import com.mobileapp.backend.enums.ResponseCode;
 import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.repositories.LocationRepository;
@@ -16,9 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 

@@ -26,6 +26,11 @@ public class JWTProvider {
     @Value("${application.security.jwt.secret-key}")
     private String secreteString = "843567893696976453275974432697R634976R738467TR678T34865R6834R8763T478378637664538745673865783678548735687R3";
 
+    public JWTProvider() {
+        byte[] keyBytes = Base64.getDecoder().decode(secreteString.getBytes(StandardCharsets.UTF_8));
+        this.Key = new SecretKeySpec(keyBytes, "HmacSHA256");
+    }
+
     public String generateAccessToken(HttpServletResponse res, UserInfoInToken userInfoInToken, String role) {
         Long id = userInfoInToken.getId();
         int accessTokenExpiration = JWTConstant.ACCESS_TOKEN_EXPIRED;
@@ -53,7 +58,7 @@ public class JWTProvider {
         return refreshToken;
     }
 
-    public String getUsernameFromJWT(String token){
+    public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(Key)
                 .build()
@@ -70,7 +75,7 @@ public class JWTProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (Exception ex) {
-            throw new AuthenticationCredentialsNotFoundException("JWT was exprired or incorrect",ex.fillInStackTrace());
+            throw new AuthenticationCredentialsNotFoundException("JWT was exprired or incorrect", ex.fillInStackTrace());
         }
     }
 
@@ -86,10 +91,5 @@ public class JWTProvider {
 
     public DecodedJWT decodeJwt(String value) {
         return JWT.decode(value);
-    }
-
-    public JWTProvider() {
-        byte[] keyBytes = Base64.getDecoder().decode(secreteString.getBytes(StandardCharsets.UTF_8));
-        this.Key = new SecretKeySpec(keyBytes, "HmacSHA256");
     }
 }

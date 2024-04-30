@@ -6,24 +6,17 @@ import com.mobileapp.backend.configs.CustomAuthentication;
 import com.mobileapp.backend.configs.CustomUserDetailsService;
 import com.mobileapp.backend.constants.JWTConstant;
 import com.mobileapp.backend.dtos.user.UserInfoInToken;
-import com.mobileapp.backend.entities.UserEntity;
-import com.mobileapp.backend.enums.ResponseCode;
-import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -31,7 +24,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
@@ -43,6 +35,14 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     UserRepository userRepository;
+
+    public static Collection<? extends GrantedAuthority> convertStringToAuthorities(String authoritiesAsString) {
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        authorities.add(new SimpleGrantedAuthority(authoritiesAsString));
+
+        return authorities;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -67,7 +67,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private String getJWTFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7, bearerToken.length());
         }
         return null;
@@ -108,13 +108,5 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         jwtProvider.generateAccessToken(res, new UserInfoInToken(userId), authority);
         jwtProvider.generateRefreshToken(res, new UserInfoInToken(userId), authority);
         return new CustomAuthentication(userId, authorities);
-    }
-
-    public static Collection<? extends GrantedAuthority> convertStringToAuthorities(String authoritiesAsString){
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-        authorities.add(new SimpleGrantedAuthority(authoritiesAsString));
-
-        return authorities;
     }
 }
