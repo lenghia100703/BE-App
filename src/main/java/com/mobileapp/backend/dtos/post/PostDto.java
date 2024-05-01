@@ -11,7 +11,6 @@ public class PostDto {
     private Long id;
     private String title;
     private String image;
-    private UserDto userId;
     private Date createdAt;
     private Date updatedAt;
     private String createdBy;
@@ -21,7 +20,6 @@ public class PostDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.image = post.getImage();
-        this.userId = new UserDto(post.getUserId());
         this.createdBy = post.getCreatedBy();
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getUpdatedAt();

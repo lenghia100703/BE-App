@@ -78,6 +78,8 @@ public class LocationService {
         location.setUpdatedAt(new Date(System.currentTimeMillis()));
         location.setUpdatedBy(userService.getCurrentUser().getEmail());
 
+        locationRepository.save(location);
+
         return "Edited successfully";
     }
 }

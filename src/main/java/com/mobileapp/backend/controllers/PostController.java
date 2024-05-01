@@ -27,9 +27,10 @@ public class PostController {
 
     @RequestMapping(value = "", consumes = {"multipart/form-data"})
     public CommonResponseDto<PostDto> createPost(@RequestParam(value = "image", required = false) MultipartFile file,
-                                                 @RequestParam("title") String title) throws IOException {
+                                                 @RequestParam("title") String title,
+                                                 @RequestParam("imageUrl") String imageUrl) throws IOException {
 
-        return new CommonResponseDto<>(postService.createPost(title, file));
+        return new CommonResponseDto<>(postService.createPost(title, imageUrl, file));
     }
 
 
@@ -41,9 +42,10 @@ public class PostController {
     @PutMapping("/{id}")
     public CommonResponseDto<String> editPost(@PathVariable Long id,
                                               @RequestParam(value = "image", required = false) MultipartFile file,
-                                              @RequestParam("title") String title) throws IOException {
+                                              @RequestParam("title") String title,
+                                              @RequestParam("imageUrl") String imageUrl) throws IOException {
 
-        return new CommonResponseDto<>(postService.editPost(id, title, file));
+        return new CommonResponseDto<>(postService.editPost(id, title, imageUrl, file));
     }
 
     @DeleteMapping("/{id}")

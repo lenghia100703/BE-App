@@ -49,7 +49,7 @@ public class PostService {
         return postRepository.findById(id).orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND, "News not found!"));
     }
 
-    public PostDto createPost(String title, MultipartFile file) throws IOException {
+    public PostDto createPost(String title, String imageUrl, MultipartFile file) throws IOException {
         PostEntity post = new PostEntity();
         post.setTitle(title);
         post.setCreatedAt(new Date(System.currentTimeMillis()));
@@ -57,6 +57,8 @@ public class PostService {
 
         if (file != null) {
             post.setImage(githubUtil.uploadImage(file, "post"));
+        } else {
+            post.setImage(imageUrl);
         }
 
         return new PostDto(postRepository.save(post));
@@ -73,15 +75,19 @@ public class PostService {
         return "Deleted successfully";
     }
 
-    public String editPost(Long id, String title, MultipartFile file) throws IOException {
+    public String editPost(Long id, String title, String imageUrl, MultipartFile file) throws IOException {
         PostEntity post = postRepository.getById(id);
         if (post == null) {
             throw new CommonException(ResponseCode.NOT_FOUND);
         }
         post.setTitle(title);
+        post.setUpdatedBy(userService.getCurrentUser().getEmail());
+        post.setUpdatedAt(new Date(System.currentTimeMillis()));
 
         if (file != null) {
             post.setImage(githubUtil.uploadImage(file, "post"));
+        } else {
+            post.setImage(imageUrl);
         }
         postRepository.save(post);
 
