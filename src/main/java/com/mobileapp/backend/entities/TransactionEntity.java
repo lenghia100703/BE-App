@@ -1,5 +1,8 @@
 package com.mobileapp.backend.entities;
 
+import com.mobileapp.backend.enums.Currency;
+import com.mobileapp.backend.enums.PaymentMethod;
+import com.mobileapp.backend.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,11 +22,20 @@ public class TransactionEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String paymentMethod;
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod = PaymentMethod.PAYPAL;
 
     private Long totalPrice;
 
     private Long quantity;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.PROCESSING;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency = Currency.USD;
+
+    private String orderId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
