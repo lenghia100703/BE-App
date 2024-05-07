@@ -5,6 +5,8 @@ import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.transaction.AddTransactionDto;
 import com.mobileapp.backend.dtos.transaction.TransactionDto;
 import com.mobileapp.backend.entities.TransactionEntity;
+import com.mobileapp.backend.enums.ResponseCode;
+import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,7 +26,7 @@ public class TransactionService {
     UserService userService;
 
     public PaginatedDataDto<TransactionDto> getAllTransactions(int page) {
-        List<TransactionEntity> allTransactions = transactionRepository.findAll();
+        List<TransactionEntity> allTransactions = transactionRepository.findAllTransactionNotDeleted();
         if (page >= 1) {
             Pageable pageable = PageRequest.of(page - 1, PageableConstants.LIMIT);
             Page<TransactionEntity> transactionPage = transactionRepository.findAll(pageable);
@@ -50,5 +52,17 @@ public class TransactionService {
         transaction.setUserId(userService.getCurrentUser());
 
         return transactionRepository.save(transaction);
+    }
+
+    public String deleteTransaction(Long id) {
+        TransactionEntity transaction = transactionRepository.getById(id);
+
+        if (transaction == null) {
+            throw new CommonException(ResponseCode.NOT_FOUND);
+        }
+
+        transaction.setDeleted(true);
+        transactionRepository.save(transaction);
+        return "Deleted successfully";
     }
 }

@@ -67,6 +67,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/location/**").permitAll()
                                 .requestMatchers("/api/transaction/**").permitAll()
                                 .requestMatchers("/api/ticket/**").permitAll()
+                                .requestMatchers("/api/banner/**").permitAll()
                                 .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider());
         httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

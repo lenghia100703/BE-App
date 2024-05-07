@@ -54,7 +54,7 @@ public class UserService {
     }
 
     public PaginatedDataDto<UserDto> getAllUsers(int page) {
-        Stream<UserEntity> allUsers = userRepository.findAll().stream().filter(user -> user.getRole().equals("USER"));
+        List<UserEntity> allUsers = userRepository.findAllUserByRole();
         if (page >= 1) {
             Pageable pageable = PageRequest.of(page - 1, PageableConstants.LIMIT);
             Page<UserEntity> userPage = userRepository.findAll(pageable);

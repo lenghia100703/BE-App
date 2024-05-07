@@ -28,7 +28,7 @@ public class TicketService {
     TransactionRepository transactionRepository;
 
     public PaginatedDataDto<TicketDto> getAllTicket(int page) {
-        List<TicketEntity> allTicket = ticketRepository.findAll();
+        List<TicketEntity> allTicket = ticketRepository.findAllTicketExpired(new Date());
         if (page >= 1) {
             Pageable pageable = PageRequest.of(page - 1, PageableConstants.LIMIT);
             Page<TicketEntity> newsPage = ticketRepository.findAll(pageable);
@@ -52,6 +52,8 @@ public class TicketService {
         ticket.setTotalPrice(transaction.getTotalPrice());
         ticket.setTransactionId(transaction);
         ticket.setExpiry(new Date(System.currentTimeMillis() + TicketConstant.TICKET_EXPIRATION_DATE));
+        ticket.setCreatedAt(new Date(System.currentTimeMillis()));
+        ticket.setCreatedBy(transaction.getCreatedBy());
 
         return ticketRepository.save(ticket);
     }

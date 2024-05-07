@@ -24,6 +24,7 @@ public class TransactionDto {
     private Date updatedAt;
     private String createdBy;
     private String updatedBy;
+    private boolean isDeleted;
 
     public TransactionDto(TransactionEntity transaction) {
         this.id = transaction.getId();
@@ -38,5 +39,6 @@ public class TransactionDto {
         this.createdAt = transaction.getCreatedAt();
         this.updatedAt = transaction.getUpdatedAt();
         this.updatedBy = transaction.getUpdatedBy();
+        this.isDeleted = transaction.isDeleted();
     }
 }

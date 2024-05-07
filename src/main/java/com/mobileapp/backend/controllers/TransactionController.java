@@ -28,4 +28,9 @@ public class TransactionController {
     public CommonResponseDto<TransactionDto> createTransaction(@RequestBody AddTransactionDto addTransactionDto) {
         return new CommonResponseDto<>(new TransactionDto(transactionService.createTransaction(addTransactionDto)));
     }
+
+    @DeleteMapping("/{id}")
+    public CommonResponseDto<String> deleteTransaction(@PathVariable("id") Long id) {
+        return new CommonResponseDto<>(transactionService.deleteTransaction(id));
+    }
 }

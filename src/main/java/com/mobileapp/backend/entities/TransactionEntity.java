@@ -37,6 +37,8 @@ public class TransactionEntity extends BaseEntity {
 
     private String orderId;
 
+    private boolean isDeleted = false;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)

@@ -1,8 +1,11 @@
 package com.mobileapp.backend.services;
 
+import com.mobileapp.backend.constants.TicketConstant;
+import com.mobileapp.backend.entities.TicketEntity;
 import com.mobileapp.backend.entities.TransactionEntity;
 import com.mobileapp.backend.enums.Currency;
 import com.mobileapp.backend.enums.Status;
+import com.mobileapp.backend.repositories.TicketRepository;
 import com.mobileapp.backend.repositories.TransactionRepository;
 import com.paypal.core.PayPalHttpClient;
 import com.paypal.http.HttpResponse;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,6 +24,12 @@ public class PaypalService {
 
     @Autowired
     TransactionRepository transactionRepository;
+
+    @Autowired
+    TicketService ticketService;
+
+    @Autowired
+    TicketRepository ticketRepository;
 
     public PaypalService(PayPalHttpClient payPalClient) {
         this.payPalClient = payPalClient;
@@ -58,6 +68,7 @@ public class PaypalService {
             if (transaction != null) {
                 transaction.setStatus(Status.SUCCESS);
                 transactionRepository.save(transaction);
+                ticketService.createTicket(transactionId);
                 return "Payment successfully";
             }
         } else {

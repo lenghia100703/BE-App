@@ -5,7 +5,6 @@ import com.mobileapp.backend.dtos.PaginatedDataDto;
 import com.mobileapp.backend.dtos.news.NewsDto;
 import com.mobileapp.backend.repositories.NewsRepository;
 import com.mobileapp.backend.services.NewsService;
-import com.mobileapp.backend.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,8 +14,6 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/news")
 public class NewsController {
-    @Autowired
-    StorageService storageService;
 
     @Autowired
     NewsRepository newsRepository;
