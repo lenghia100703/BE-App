@@ -20,9 +20,10 @@ public class BannerController {
     @RequestMapping(value = "", consumes = {"multipart/form-data"})
     public CommonResponseDto<BannerDto> createBanner(@RequestParam(value = "image", required = false) MultipartFile file,
                                                  @RequestParam("title") String title,
+                                                 @RequestParam("isActive") String active,
                                                  @RequestParam("imageUrl") String imageUrl) throws IOException {
 
-        return new CommonResponseDto<>(bannerService.createBanner(title, imageUrl, file));
+        return new CommonResponseDto<>(bannerService.createBanner(title, active, imageUrl, file));
     }
 
 
@@ -47,7 +48,7 @@ public class BannerController {
                                               @RequestParam(value = "image", required = false) MultipartFile file,
                                               @RequestParam("title") String title,
                                               @RequestParam("imageUrl") String imageUrl,
-                                              @RequestParam("body") Boolean active) throws IOException {
+                                              @RequestParam("isActive") String active) throws IOException {
 
         return new CommonResponseDto<>(bannerService.editBanner(id, title, active, imageUrl, file));
     }

@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface BannerRepository extends JpaRepository<BannerEntity, Long> {
-    @Query("SELECT b FROM BannerEntity b WHERE b.isActive = true")
+    @Query("SELECT b FROM BannerEntity b WHERE b.isActive = 'true'")
     List<BannerEntity> findAllBannerIsActive();
 }

@@ -21,5 +21,5 @@ public class BannerEntity extends BaseEntity {
 
     private String image;
 
-    private boolean isActive = false;
+    private String isActive;
 }

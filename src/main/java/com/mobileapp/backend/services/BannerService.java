@@ -52,9 +52,10 @@ public class BannerService {
         return bannerRepository.findById(id).orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND, "Banner not found!"));
     }
 
-    public BannerDto createBanner(String title, String imageUrl, MultipartFile file) throws IOException {
+    public BannerDto createBanner(String title, String active, String imageUrl, MultipartFile file) throws IOException {
         BannerEntity banner = new BannerEntity();
         banner.setTitle(title);
+        banner.setIsActive(active);
         if (file != null) {
             banner.setImage(githubUtil.uploadImage(file, "banner"));
         } else {
@@ -66,14 +67,14 @@ public class BannerService {
         return new BannerDto(bannerRepository.save(banner));
     }
 
-    public String editBanner(Long id, String title, Boolean active, String imageUrl, MultipartFile file) throws IOException {
+    public String editBanner(Long id, String title, String active, String imageUrl, MultipartFile file) throws IOException {
         BannerEntity banner = bannerRepository.getById(id);
         if (banner == null) {
             throw new CommonException(ResponseCode.NOT_FOUND);
         }
 
         banner.setTitle(title);
-        banner.setActive(active);
+        banner.setIsActive(active);
         banner.setUpdatedBy(userService.getCurrentUser().getEmail());
         banner.setUpdatedAt(new Date(System.currentTimeMillis()));
 

@@ -10,7 +10,7 @@ public class BannerDto {
     private Long id;
     private String title;
     private String image;
-    private boolean isActive;
+    private String isActive;
     private Date createdAt;
     private Date updatedAt;
     private String createdBy;
@@ -20,7 +20,7 @@ public class BannerDto {
         this.id = banner.getId();
         this.title = banner.getTitle();
         this.image = banner.getImage();
-        this.isActive = banner.isActive();
+        this.isActive = banner.getIsActive();
         this.createdBy = banner.getCreatedBy();
         this.createdAt = banner.getCreatedAt();
         this.updatedAt = banner.getUpdatedAt();
