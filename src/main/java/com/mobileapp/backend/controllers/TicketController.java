@@ -7,6 +7,8 @@ import com.mobileapp.backend.services.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/ticket")
 public class TicketController {
@@ -16,6 +18,11 @@ public class TicketController {
     @GetMapping("")
     public PaginatedDataDto<TicketDto> getAllTickets(@RequestParam("page") int page) {
         return ticketService.getAllTicket(page);
+    }
+
+    @GetMapping("/me")
+    public CommonResponseDto<List<TicketDto>> getTicketByUserId() {
+        return new CommonResponseDto<>(ticketService.getTicketByUserId().stream().map(TicketDto::new).toList());
     }
 
     @PostMapping("/{id}")

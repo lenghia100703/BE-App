@@ -8,6 +8,8 @@ import com.mobileapp.backend.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/transaction")
 public class TransactionController {
@@ -17,6 +19,11 @@ public class TransactionController {
     @GetMapping("")
     public PaginatedDataDto<TransactionDto> getAllTransactions(@RequestParam("page") int page) {
         return transactionService.getAllTransactions(page);
+    }
+
+    @GetMapping("/me")
+    public CommonResponseDto<List<TransactionDto>> getTransactionByUserId() {
+        return new CommonResponseDto<>(transactionService.getTransactionByUserId().stream().map(TransactionDto::new).toList());
     }
 
     @GetMapping("/{id}")

@@ -27,6 +27,9 @@ public class TicketService {
     @Autowired
     TransactionRepository transactionRepository;
 
+    @Autowired
+    UserService userService;
+
     public PaginatedDataDto<TicketDto> getAllTicket(int page) {
         List<TicketEntity> allTicket = ticketRepository.findAllTicketExpired(new Date());
         if (page >= 1) {
@@ -39,6 +42,11 @@ public class TicketService {
         } else {
             return new PaginatedDataDto<>(allTicket.stream().map(TicketDto::new).toList(), 1, allTicket.toArray().length);
         }
+    }
+
+    public List<TicketEntity> getTicketByUserId() {
+
+        return ticketRepository.findTicketByUserId(userService.getCurrentUser().getId());
     }
 
     public TicketEntity createTicket(Long transactionId) {

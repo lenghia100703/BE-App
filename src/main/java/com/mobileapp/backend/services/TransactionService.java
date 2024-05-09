@@ -43,6 +43,10 @@ public class TransactionService {
         return transactionRepository.findById(id).orElse(null);
     }
 
+    public List<TransactionEntity> getTransactionByUserId() {
+        return transactionRepository.findTransactionByUserId(userService.getCurrentUser().getId());
+    }
+
     public TransactionEntity createTransaction(AddTransactionDto addTransactionDto) {
         TransactionEntity transaction = new TransactionEntity();
         transaction.setQuantity(addTransactionDto.getQuantity());
