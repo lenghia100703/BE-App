@@ -71,8 +71,7 @@ public class UserController {
 
     @PutMapping("/change-password/{id}")
     public CommonResponseDto<String> changePassword(@PathVariable("id") Long id, @RequestBody ChangePasswordDto changePasswordDto) {
-
         userService.changePassword(id, changePasswordDto);
-        return new CommonResponseDto<>(ResponseCode.SUCCESS);
+        return new CommonResponseDto<>("Change password successfully");
     }
 }

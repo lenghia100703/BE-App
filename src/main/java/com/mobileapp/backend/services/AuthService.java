@@ -13,6 +13,7 @@ import com.mobileapp.backend.security.JWTProvider;
 import com.mobileapp.backend.utils.SecurityContextUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -36,6 +38,10 @@ public class AuthService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Value("${default.avatar}")
+    String defaultAvatar;
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -118,6 +124,10 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         user.setEmail(registerDto.getEmail());
         user.setUsername(registerDto.getUsername());
+        user.setRole("USER");
+        user.setAvatar(defaultAvatar);
+        user.setCreatedAt(new Date(System.currentTimeMillis()));
+        user.setCreatedBy(registerDto.getEmail());
 
         return userRepository.save(user);
     }

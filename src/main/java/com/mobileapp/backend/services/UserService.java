@@ -66,8 +66,7 @@ public class UserService {
 
             return new PaginatedDataDto<>(userDtos, page, allUsers.toArray().length);
         } else {
-            List<UserDto> userDtos = userRepository.findAll().stream()
-                    .filter(user -> user.getRole().equals("USER"))
+            List<UserDto> userDtos = allUsers.stream()
                     .map(UserDto::new)
                     .collect(Collectors.toList());
             return new PaginatedDataDto<>(userDtos, 1, allUsers.toArray().length);
@@ -100,7 +99,7 @@ public class UserService {
 
         user.setEmail(email);
         user.setUsername(username);
-        user.setUpdatedBy(getCurrentUser().getEmail());
+        user.setUpdatedBy(user.getEmail());
         user.setUpdatedAt(new Date(System.currentTimeMillis()));
 
         if (!Objects.equals(phone, "")) {
@@ -111,8 +110,12 @@ public class UserService {
 
         if (file != null) {
             user.setAvatar(githubUtil.uploadImage(file, "avatar"));
-        } else {
+        }
+
+        if (!Objects.equals(avatarUrl, "")) {
             user.setAvatar(avatarUrl);
+        } else if (Objects.equals(avatarUrl, "")) {
+            user.setAvatar(user.getAvatar());
         }
 
         userRepository.save(user);
