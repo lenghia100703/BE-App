@@ -28,9 +28,10 @@ public class PostController {
     @RequestMapping(value = "", consumes = {"multipart/form-data"})
     public CommonResponseDto<PostDto> createPost(@RequestParam(value = "image", required = false) MultipartFile file,
                                                  @RequestParam("title") String title,
+                                                 @RequestParam("description") String description,
                                                  @RequestParam("imageUrl") String imageUrl) throws IOException {
 
-        return new CommonResponseDto<>(postService.createPost(title, imageUrl, file));
+        return new CommonResponseDto<>(postService.createPost(title, description, imageUrl, file));
     }
 
 

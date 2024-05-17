@@ -92,6 +92,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private Authentication getAuthenticationFromJwt(String value) {
         DecodedJWT decodedJWT = jwtProvider.decodeJwt(value);
         Long userId = decodedJWT.getClaim("ID").asLong();
+        System.out.println(userId);
         String authority = decodedJWT.getClaim("AUTHORITIES").asString();
 
         Collection<? extends GrantedAuthority> authorities = convertStringToAuthorities(authority);

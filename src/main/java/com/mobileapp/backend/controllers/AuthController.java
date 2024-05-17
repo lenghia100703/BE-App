@@ -10,10 +10,7 @@ import com.mobileapp.backend.enums.ResponseCode;
 import com.mobileapp.backend.exceptions.CommonException;
 import com.mobileapp.backend.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
@@ -40,5 +37,10 @@ public class AuthController {
     @PostMapping("/logout")
     public CommonResponseDto<String> logout() {
         return authService.logout();
+    }
+
+    @PostMapping("/logout-by-id/{id}")
+    public CommonResponseDto<String> logoutById(@PathVariable("id") Long id) {
+        return authService.logoutByUserId(id);
     }
 }

@@ -11,6 +11,8 @@ public class PostDto {
     private Long id;
     private String title;
     private String image;
+    private String description;
+    private int rating;
     private Date createdAt;
     private Date updatedAt;
     private String createdBy;
@@ -20,6 +22,8 @@ public class PostDto {
         this.id = post.getId();
         this.title = post.getTitle();
         this.image = post.getImage();
+        this.description = post.getDescription();
+        this.rating = post.getRating();
         this.createdBy = post.getCreatedBy();
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getUpdatedAt();

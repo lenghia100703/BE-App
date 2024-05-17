@@ -22,4 +22,8 @@ public class PostEntity extends BaseEntity {
     private String title;
 
     private String image;
+
+    private int rating;
+
+    private String description;
 }

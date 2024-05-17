@@ -89,6 +89,26 @@ public class AuthService {
         return new CommonResponseDto<>("Logged out successfully");
     }
 
+    public CommonResponseDto<String> logoutByUserId(Long id) {
+        UserEntity currentUser = userRepository.findById(id).get();
+        currentUser.setAccessToken(null);
+        currentUser.setRefreshToken(null);
+        userRepository.save(currentUser);
+        SecurityContextHolder.clearContext();
+
+        ResponseCookie jwtCookie = ResponseCookie.from("jwt", null)
+                .maxAge(1000)
+                .httpOnly(true).path("/").secure(true).sameSite("None").build();
+        response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
+
+        ResponseCookie jwtRefreshCookie = ResponseCookie.from("jwt-refresh", null)
+                .maxAge(1000)
+                .httpOnly(true).path("/").secure(true).sameSite("None").build();
+        response.addHeader(HttpHeaders.SET_COOKIE, jwtRefreshCookie.toString());
+
+        return new CommonResponseDto<>("Logged out successfully");
+    }
+
     public UserEntity register(@RequestBody RegisterDto registerDto) {
         if (findByEmail(registerDto.getEmail()) != null) {
             throw new CommonException(ResponseCode.ERROR, "Email đã tồn tại");
