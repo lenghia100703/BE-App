@@ -66,6 +66,23 @@ public class PostService {
         return new PostDto(postRepository.save(post));
     }
 
+    public PostDto createPostById(Long id, String title, String description, String imageUrl, MultipartFile file) throws IOException {
+        PostEntity post = new PostEntity();
+        post.setTitle(title);
+        post.setCreatedAt(new Date(System.currentTimeMillis()));
+        post.setCreatedBy(userService.getUserById(id).getEmail());
+        post.setDescription(description);
+        post.setRating(title.length() % 4);
+
+        if (file != null) {
+            post.setImage(githubUtil.uploadImage(file, "post"));
+        } else {
+            post.setImage(imageUrl);
+        }
+
+        return new PostDto(postRepository.save(post));
+    }
+
     public String deletePost(Long id) {
         PostEntity post = postRepository.getById(id);
 

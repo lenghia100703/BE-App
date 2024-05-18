@@ -34,6 +34,16 @@ public class PostController {
         return new CommonResponseDto<>(postService.createPost(title, description, imageUrl, file));
     }
 
+    @RequestMapping(value = "/create-post-by-id", consumes = {"multipart/form-data"})
+    public CommonResponseDto<PostDto> createPostById(@RequestParam(value = "image", required = false) MultipartFile file,
+                                                     @RequestParam("id") Long id,
+                                                 @RequestParam("title") String title,
+                                                 @RequestParam("description") String description,
+                                                 @RequestParam("imageUrl") String imageUrl) throws IOException {
+
+        return new CommonResponseDto<>(postService.createPostById(id, title, description, imageUrl, file));
+    }
+
 
     @GetMapping("/{id}")
     public CommonResponseDto<PostDto> getPostById(@PathVariable("id") Long id) {
