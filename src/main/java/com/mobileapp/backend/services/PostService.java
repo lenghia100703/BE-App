@@ -72,7 +72,7 @@ public class PostService {
         post.setCreatedAt(new Date(System.currentTimeMillis()));
         post.setCreatedBy(userService.getUserById(id).getEmail());
         post.setDescription(description);
-        post.setRating(title.length() % 4);
+        post.setRating(title.length() % 5);
 
         if (file != null) {
             post.setImage(githubUtil.uploadImage(file, "post"));
