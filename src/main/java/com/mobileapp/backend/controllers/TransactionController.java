@@ -21,9 +21,9 @@ public class TransactionController {
         return transactionService.getAllTransactions(page);
     }
 
-    @GetMapping("/me")
-    public CommonResponseDto<List<TransactionDto>> getTransactionByUserId() {
-        return new CommonResponseDto<>(transactionService.getTransactionByUserId().stream().map(TransactionDto::new).toList());
+    @GetMapping("/me/{id}")
+    public CommonResponseDto<List<TransactionDto>> getTransactionByUserId(@PathVariable Long id) {
+        return new CommonResponseDto<>(transactionService.getTransactionByUserId(id).stream().map(TransactionDto::new).toList());
     }
 
     @GetMapping("/{id}")
@@ -34,6 +34,11 @@ public class TransactionController {
     @PostMapping("")
     public CommonResponseDto<TransactionDto> createTransaction(@RequestBody AddTransactionDto addTransactionDto) {
         return new CommonResponseDto<>(new TransactionDto(transactionService.createTransaction(addTransactionDto)));
+    }
+
+    @PostMapping("/create-by-user/{id}")
+    public CommonResponseDto<TransactionDto> createTransactionByUserId(@PathVariable("id") Long id, @RequestBody AddTransactionDto addTransactionDto) {
+        return new CommonResponseDto<>(new TransactionDto(transactionService.createTransactionByUserId(id, addTransactionDto)));
     }
 
     @DeleteMapping("/{id}")

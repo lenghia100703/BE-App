@@ -44,9 +44,9 @@ public class TicketService {
         }
     }
 
-    public List<TicketEntity> getTicketByUserId() {
+    public List<TicketEntity> getTicketByUserId(Long id) {
 
-        return ticketRepository.findTicketByUserId(userService.getCurrentUser().getId());
+        return ticketRepository.findTicketByUserId(id);
     }
 
     public TicketEntity createTicket(Long transactionId) {

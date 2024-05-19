@@ -20,9 +20,9 @@ public class TicketController {
         return ticketService.getAllTicket(page);
     }
 
-    @GetMapping("/me")
-    public CommonResponseDto<List<TicketDto>> getTicketByUserId() {
-        return new CommonResponseDto<>(ticketService.getTicketByUserId().stream().map(TicketDto::new).toList());
+    @GetMapping("/me/{id}")
+    public CommonResponseDto<List<TicketDto>> getTicketByUserId(@PathVariable("id") Long id) {
+        return new CommonResponseDto<>(ticketService.getTicketByUserId(id).stream().map(TicketDto::new).toList());
     }
 
     @PostMapping("/{id}")
